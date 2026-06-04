@@ -1,0 +1,45 @@
+---
+name: Gadjah Mada University
+description: Gadjah Mada University public developer/API footprint review for APIs.json cataloging.
+url: https://raw.githubusercontent.com/api-evangelist/gadjah-mada-university/refs/heads/main/review.yml
+created: '2026-06-03'
+modified: '2026-06-03'
+reviews:
+  - date: '2026-06-03'
+    rating: 2
+    summary: >-
+      Gadjah Mada University (QS World 2025 #239) has a thin public, documented
+      API surface. The one genuinely machine-consumable, no-auth API confirmed
+      live is the institutional repository OAI-PMH 2.0 endpoint, which returned
+      a valid Identify response (repository civitas UGM, EPrints). A centralized
+      CAS single sign-on is publicly reachable but is an authentication service
+      requiring UGM credentials, not an open API. The ETD repository and a
+      student-run open-data portal resolve but expose no documented API. No
+      official developer portal, REST API docs, or signup flow were found; the
+      ugm-ac-id GitHub org exists but has no public repositories. No endpoints
+      were fabricated; every URL below was probed directly.
+    endpoints:
+      - url: https://ugm.ac.id/en/
+        status: 200
+        note: Official university website (English).
+      - url: http://repository.ugm.ac.id/cgi/oai2?verb=Identify
+        status: 200
+        note: Valid OAI-PMH 2.0 Identify; EPrints "repository civitas UGM".
+      - url: http://repository.ugm.ac.id/information.html
+        status: 200
+        note: Repository about/info page.
+      - url: https://etd.repository.ugm.ac.id/
+        status: 200
+        note: Theses and dissertations repository; no OAI at /cgi/oai2 (404).
+      - url: https://sso.ugm.ac.id/cas/login
+        status: 200
+        note: CAS single sign-on login endpoint; credential-gated auth service.
+      - url: https://opendata.bemkm.ugm.ac.id/
+        status: 200
+        note: Student (BEM KM) open-data portal; no documented public API.
+      - url: https://lib.ugm.ac.id/en/
+        status: 200
+        note: Library site; e-resources are third-party gated, no UGM API.
+      - url: https://github.com/ugm-ac-id
+        status: 200
+        note: Official GitHub org exists but has no public repositories.

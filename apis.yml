@@ -1,0 +1,74 @@
+---
+aid: gadjah-mada-university
+name: Gadjah Mada University
+description: >-
+  Gadjah Mada University (Universitas Gadjah Mada, UGM) is a public research
+  university in Yogyakarta, Indonesia, and is ranked #239 in the QS World
+  University Rankings 2025. Its public, machine-consumable developer footprint
+  is limited: the institutional repository (EPrints "repository civitas UGM")
+  exposes a working OAI-PMH 2.0 metadata endpoint for harvesting scholarly
+  output, and the university operates a centralized CAS single sign-on service.
+  Most academic and administrative systems (SIMASTER, admissions) sit behind
+  authentication, and there is no public, documented developer portal.
+type: Index
+position: Consumer
+access: 3rd-Party
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://raw.githubusercontent.com/api-evangelist/gadjah-mada-university/refs/heads/main/apis.yml
+tags:
+  - Education
+  - Higher Education
+  - University
+  - Indonesia
+  - Research
+  - Open Data
+  - Library
+  - Repository
+created: '2026-06-03'
+modified: '2026-06-03'
+specificationVersion: '0.19'
+apis:
+  - aid: gadjah-mada-university:repository-oai-pmh
+    name: UGM Repository OAI-PMH
+    description: >-
+      OAI-PMH 2.0 metadata harvesting endpoint for "repository civitas UGM",
+      the institutional repository running on EPrints 3. Returns Dublin Core
+      metadata for scholarly works. Verified live via an Identify request
+      (repositoryName "repository civitas UGM", adminEmail library@ugm.ac.id).
+    humanURL: http://repository.ugm.ac.id/
+    baseURL: http://repository.ugm.ac.id/cgi/oai2
+    tags: [ Repository, OAI-PMH, Library, Metadata, Research, Open Data ]
+    properties:
+      - type: Documentation
+        url: http://repository.ugm.ac.id/information.html
+  - aid: gadjah-mada-university:sso-cas
+    name: UGM Single Sign-On (CAS)
+    description: >-
+      Central Authentication Service (CAS) single sign-on used across UGM
+      systems for students, staff, and lecturers. The CAS login endpoint is
+      publicly reachable; it is an authentication service rather than an open
+      data API and requires valid UGM credentials.
+    humanURL: https://dti.ugm.ac.id/knowledge-base/akses-365
+    baseURL: https://sso.ugm.ac.id/cas
+    tags: [ Authentication, SSO, CAS, Identity ]
+    properties:
+      - type: Documentation
+        url: https://dti.ugm.ac.id/knowledge-base/akses-365
+common:
+  - type: Website
+    url: https://ugm.ac.id/en/
+  - type: GitHub
+    url: https://github.com/ugm-ac-id
+  - type: LinkedIn
+    url: https://www.linkedin.com/school/universitas-gadjah-mada/
+  - type: Plans
+    url: plans/gadjah-mada-university-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/gadjah-mada-university-rate-limits.yml
+  - type: FinOps
+    url: finops/gadjah-mada-university-finops.yml
+  - type: Review
+    url: review.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
