@@ -1,0 +1,67 @@
+{
+  "@context": {
+    "@vocab": "https://schema.org/",
+    "ugm": "https://ugm.ac.id/ns#",
+    "oai": "http://www.openarchives.org/OAI/2.0/",
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "name": "name",
+    "url": "url",
+    "description": "description",
+    "email": "email",
+    "logo": "logo",
+    "sameAs": "sameAs",
+    "foundingLocation": "foundingLocation",
+    "department": "department",
+    "library": {
+      "@id": "ugm:library",
+      "@type": "@id"
+    },
+    "repository": {
+      "@id": "ugm:repository",
+      "@type": "@id"
+    },
+    "oaiBaseURL": {
+      "@id": "oai:baseURL",
+      "@type": "@id"
+    },
+    "protocolVersion": "oai:protocolVersion",
+    "metadataPrefix": "oai:metadataPrefix",
+    "earliestDatestamp": "oai:earliestDatestamp",
+    "adminEmail": "oai:adminEmail",
+    "identifier": "dc:identifier",
+    "title": "dc:title",
+    "creator": "dc:creator",
+    "subject": "dc:subject",
+    "date": "dc:date",
+    "publisher": "dc:publisher",
+    "ssoService": {
+      "@id": "ugm:ssoService",
+      "@type": "@id"
+    }
+  },
+  "@type": "CollegeOrUniversity",
+  "@id": "https://ugm.ac.id/en/",
+  "name": "Gadjah Mada University",
+  "alternateName": "Universitas Gadjah Mada",
+  "url": "https://ugm.ac.id/en/",
+  "description": "Public research university in Yogyakarta, Indonesia.",
+  "sameAs": [
+    "https://www.linkedin.com/school/universitas-gadjah-mada/",
+    "https://github.com/ugm-ac-id"
+  ],
+  "repository": {
+    "@type": "DataCatalog",
+    "name": "repository civitas UGM",
+    "url": "https://repository.ugm.ac.id/",
+    "oaiBaseURL": "https://repository.ugm.ac.id/cgi/oai2",
+    "protocolVersion": "2.0",
+    "metadataPrefix": "oai_dc",
+    "earliestDatestamp": "2014-01-06T06:46:00Z",
+    "adminEmail": "library@ugm.ac.id"
+  },
+  "ssoService": {
+    "@type": "WebAPI",
+    "name": "UGM Single Sign-On (CAS)",
+    "url": "https://sso.ugm.ac.id/cas"
+  }
+}

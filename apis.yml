@@ -69,6 +69,10 @@ common:
     url: finops/gadjah-mada-university-finops.yml
   - type: Review
     url: review.yml
+  - type: x-json-ld
+    url: json-ld/gadjah-mada-university-context.jsonld
+  - type: x-blogs
+    url: blogs/blogs.json
 maintainers:
   - FN: Kin Lane
     email: kin@apievangelist.com

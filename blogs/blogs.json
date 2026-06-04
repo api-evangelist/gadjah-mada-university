@@ -1,0 +1,14 @@
+{
+  "repo": "gadjah-mada-university",
+  "feeds": [
+    {
+      "source": "https://ugm.ac.id/en/news/",
+      "feed_url": "https://ugm.ac.id/en/feed/",
+      "title": "Universitas Gadjah Mada",
+      "saved": 0,
+      "method": "none"
+    }
+  ],
+  "post_count": 0,
+  "fetched": "2026-06-03T00:00:00Z"
+}
