@@ -55,6 +55,8 @@ apis:
       - type: Documentation
         url: https://dti.ugm.ac.id/knowledge-base/akses-365
 common:
+  - type: DomainSecurity
+    url: security/gadjah-mada-university-domain-security.yml
   - type: Website
     url: https://ugm.ac.id/en/
   - type: GitHub
