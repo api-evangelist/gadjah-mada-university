@@ -1,103 +1,622 @@
 ---
 aid: gadjah-mada-university
 name: Gadjah Mada University
+x-type: university
+x-category: Public Research University
 description: >-
-  Gadjah Mada University (Universitas Gadjah Mada, UGM) is a public research
-  university in Yogyakarta, Indonesia, and is ranked #239 in the QS World
-  University Rankings 2025. Its public, machine-consumable developer footprint
-  is limited: the institutional repository (EPrints "repository civitas UGM")
-  exposes a working OAI-PMH 2.0 metadata endpoint for harvesting scholarly
-  output, and the university operates a centralized CAS single sign-on service.
-  Most academic and administrative systems (SIMASTER, admissions) sit behind
-  authentication, and there is no public, documented developer portal.
+  Gadjah Mada University (Universitas Gadjah Mada, UGM) is a public research university in
+  Yogyakarta, Indonesia, founded in 1949 and the country's oldest and largest state university.
+  Unusually for this cohort, UGM's programmable footprint is real and it is its own: the university
+  operates and publishes a first-party OpenAPI 3.1.0 contract for UGM ID, its OAuth 2.0 / OpenID
+  Connect authorization server at oauth.simaster.ugm.ac.id, complete with an OIDC Discovery
+  document, an RFC 8414 authorization-server metadata document, PKCE, RFC 7662 introspection, RFC
+  7009 revocation, RFC 8693 token exchange, a Swagger UI and a public health endpoint. Alongside it
+  UGM runs its own Shibboleth SAML 2.0 Identity Provider, a CAS server, and two independent, fully
+  functional OAI-PMH 2.0 endpoints — the EPrints institutional repository at repository.ugm.ac.id
+  and the university-wide Open Journal Systems platform at journal.ugm.ac.id, whose articles carry
+  DOIs under UGM's own Crossref prefix 10.22146 (member 9411). None of that is a vendor's contract
+  running under UGM's name; every host is under ugm.ac.id and every specification describes itself
+  as UGM's. What UGM does not have is a developer programme. There is no developer portal, no
+  self-service client registration, no dynamic client registration, no documented route to a
+  client_id, no changelog, no status page, no terms of service and no licence on any surface. There
+  is no open data portal — data.ugm.ac.id returns a maintenance page — no public course, timetable
+  or registrar API, and no research-computing service catalog. The main site's WordPress REST API
+  is deliberately closed to anonymous callers, and the whole /.well-known/ path is blocked at the
+  edge. The honest summary is a genuine engineering surface with no consumer-facing programme
+  around it, plus three real registry and federation relationships recorded as facts about the
+  institution rather than as contracts it wrote.
 type: Index
 deliveryModel:
   model: saas
   open_source: false
-  commercial: true
-  callable_host: false
+  commercial: false
+  callable_host: true
   label: Hosted service · you call their endpoint
-  confidence: medium
+  confidence: high
   source:
-  - pricing
-  generated: '2026-08-28'
-  method: derived
+  - openapi
+  - probe
+  generated: '2026-09-01'
+  method: probed
+  note: >-
+    Revised 2026-09-01. UGM operates callable hosts of its own — verified by live retrieval of an
+    OpenAPI 3.1.0 document, two OAI-PMH endpoints and a SAML descriptor. Not commercial: no pricing,
+    no plans and no billing exist for any surface.
 accessModel:
   pricing: free
-  onboarding: unknown
+  onboarding: request
   trial: false
-  try_now: false
+  try_now: true
   public: false
-  label: Free
-  confidence: medium
+  label: Free · Credentials issued internally, read-only surfaces open
+  confidence: high
   source:
-  - plans
-  generated: '2026-07-22'
-  method: derived
-position: Consumer
+  - authentication
+  - probe
+  generated: '2026-09-01'
+  method: probed
+  note: >-
+    Revised 2026-09-01. The discovery documents, the OpenAPI, /health and both OAI-PMH endpoints are
+    anonymous and free — verified with no credentials. Everything behind a token requires a
+    client_id issued internally by DTI; there is no public registration page and no dynamic client
+    registration endpoint, so onboarding is `request` and `public` is false.
+position: Consuming
 access: 3rd-Party
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/gadjah-mada-university.png
 url: https://raw.githubusercontent.com/api-evangelist/gadjah-mada-university/refs/heads/main/apis.yml
 tags:
-  - Education
-  - Higher Education
-  - University
-  - Indonesia
-  - Research
-  - Open Data
-  - Library
-  - Repository
+- University
+- Higher Education
+- Education
+- Indonesia
+- Research
+- Identity Federation
+- Authentication
+- OpenID Connect
+- OAuth
+- Research Repository
+- Scholarly Publishing
+- OAI-PMH
+- Library
 created: '2026-06-03'
-modified: '2026-06-03'
+modified: '2026-09-01'
 specificationVersion: '0.23'
 apis:
-  - aid: gadjah-mada-university:repository-oai-pmh
-    name: UGM Repository OAI-PMH
-    description: >-
-      OAI-PMH 2.0 metadata harvesting endpoint for "repository civitas UGM",
-      the institutional repository running on EPrints 3. Returns Dublin Core
-      metadata for scholarly works. Verified live via an Identify request
-      (repositoryName "repository civitas UGM", adminEmail library@ugm.ac.id).
-    humanURL: http://repository.ugm.ac.id/
-    baseURL: http://repository.ugm.ac.id/cgi/oai2
-    tags: [ Repository, OAI-PMH, Library, Metadata, Research, Open Data ]
-    properties:
-      - type: Documentation
-        url: http://repository.ugm.ac.id/information.html
-  - aid: gadjah-mada-university:sso-cas
-    name: UGM Single Sign-On (CAS)
-    description: >-
-      Central Authentication Service (CAS) single sign-on used across UGM
-      systems for students, staff, and lecturers. The CAS login endpoint is
-      publicly reachable; it is an authentication service rather than an open
-      data API and requires valid UGM credentials.
-    humanURL: https://dti.ugm.ac.id/knowledge-base/akses-365
-    baseURL: https://sso.ugm.ac.id/cas
-    tags: [ Authentication, SSO, CAS, Identity ]
-    properties:
-      - type: Documentation
-        url: https://dti.ugm.ac.id/knowledge-base/akses-365
+- aid: gadjah-mada-university:ugm-id
+  name: UGM ID — OAuth 2.0 / OpenID Connect Authorization Server
+  description: >-
+    Universitas Gadjah Mada's own identity API, operated by the Directorate of Information
+    Technology (DTI) at oauth.simaster.ugm.ac.id, in front of SIMASTER, the university's integrated
+    academic information system. UGM publishes an OpenAPI 3.1.0 document for it at
+    /openapi.json (retrieved 2026-09-01, 200, 19677 bytes) and serves Swagger UI from /docs. Twenty
+    operations across five tags: the OAuth2 core (authorize, token, introspect, revoke, logout,
+    userinfo), Discovery (OIDC configuration, RFC 8414 metadata, JWKS), three read-only resource
+    endpoints (/api/me, /user/me, /user/username/{username}), social login initiation for Google,
+    Microsoft 365, Facebook, LinkedIn and Apple, and a public /health check that reports the status
+    of its database, Redis and SIMASTER dependencies. Six grant types including PKCE-protected
+    authorization_code and RFC 8693 token exchange. Five scopes, all read-only. The specification is
+    written by UGM in Indonesian. Two real defects are recorded rather than smoothed over: both
+    discovery documents emit scheme-less URLs, breaking OIDC Discovery and RFC 8414 conformance, and
+    the JWKS endpoint returns an empty key set while advertising RS256 id_tokens.
+  humanURL: https://oauth.simaster.ugm.ac.id/docs
+  baseURL: https://oauth.simaster.ugm.ac.id
+  tags: [Identity, Authentication, OAuth, OpenID Connect, SSO, Students, Staff]
+  properties:
+  - type: OpenAPI
+    url: openapi/gadjah-mada-university-ugm-id-openapi.yml
+  - type: x-openapi-original
+    url: openapi/_original/gadjah-mada-university-ugm-id-openapi.json
+  - type: APIReference
+    url: https://oauth.simaster.ugm.ac.id/docs
+  - type: Documentation
+    url: https://oauth.simaster.ugm.ac.id/openapi.json
+  - type: x-openid-configuration
+    url: https://oauth.simaster.ugm.ac.id/.well-known/openid-configuration
+  - type: x-oauth-authorization-server
+    url: https://oauth.simaster.ugm.ac.id/.well-known/oauth-authorization-server
+  - type: Authentication
+    url: authentication/gadjah-mada-university-authentication.yml
+  - type: Scopes
+    url: scopes/gadjah-mada-university-scopes.yml
+  - type: JSONSchema
+    url: json-schema/gadjah-mada-university-ugm-id-schemas.json
+  - type: Examples
+    url: examples/gadjah-mada-university-ugm-id-examples.yml
+  - type: Errors
+    url: errors/gadjah-mada-university-errors.yml
+  - type: Rules
+    url: rules/gadjah-mada-university-rules.yml
+  - type: Status
+    url: https://oauth.simaster.ugm.ac.id/health
+  x-operator: institution
+  x-operator-evidence: >-
+    servers[] in UGM's own OpenAPI are https://oauth.simaster.ugm.ac.id (Production) and
+    https://oauth.dev.ugm.ac.id (Development), both under the ugm.ac.id registrable domain.
+    info.title is "UGM ID"; the description is written in Indonesian and names SIMASTER, UGM's own
+    academic information system, as the backing system. No vendor is named anywhere in the
+    document, and no other institution in the cohort ships this title.
+  x-probe:
+    baseURL_status: 200
+    openapi_status: 200
+    openapi_bytes: 19677
+    docs_status: 200
+    health_status: 200
+    openid_configuration_status: 200
+    oauth_authorization_server_status: 200
+    jwks_status: 200
+    jwks_note: 200 with an empty key set — {"keys":[]}
+    dev_server_status: 403
+    probed: '2026-09-01'
+- aid: gadjah-mada-university:shibboleth-idp
+  name: UGM Shibboleth SAML 2.0 Identity Provider
+  description: >-
+    UGM's own Shibboleth Identity Provider, entityID https://sso.ugm.ac.id/idp/shibboleth, publishing
+    an unsigned SAML EntityDescriptor from the university's own host — retrieved live on 2026-09-01
+    (200, 6379 bytes, application/xml) and saved to this repo. Advertises SAML 2.0, SAML 1.1 and the
+    native Shibboleth 1.0 authn profile over HTTP-Redirect, HTTP-POST and HTTP-POST-SimpleSign, with
+    SOAP artifact resolution, three single-logout bindings, and a separate AttributeAuthority-
+    Descriptor exposing SAML 1.0 and SAML 2.0 SOAP AttributeQuery. Institution-operated by
+    definition. Two findings are recorded honestly: shibmd:Scope is declared as "ac.id" — the whole
+    Indonesian academic namespace — rather than "ugm.ac.id", and the entity is NOT present in the
+    eduGAIN aggregate (10,616 entities checked 2026-09-01), so the IdP is self-published rather than
+    inter-federated. It is also not a developer API: no application can obtain an assertion without
+    being registered as a service provider.
+  humanURL: https://sso.ugm.ac.id/
+  baseURL: https://sso.ugm.ac.id/idp/profile/Metadata/SAML
+  tags: [Identity, SSO, SAML, Shibboleth, Federation]
+  properties:
+  - type: IdentityFederation
+    url: https://sso.ugm.ac.id/idp/profile/Metadata/SAML
+  - type: Authentication
+    url: authentication/gadjah-mada-university-authentication.yml
+  - type: x-saml-metadata
+    url: authentication/gadjah-mada-university-saml-idp-metadata.xml
+  - type: Conformance
+    url: conformance/gadjah-mada-university-conformance.yml
+  x-operator: institution
+  x-operator-evidence: >-
+    The EntityDescriptor is served from sso.ugm.ac.id, a host under the institution's own
+    registrable domain, and its entityID is https://sso.ugm.ac.id/idp/shibboleth. Deliberately
+    classed `institution` rather than `federation`: the federation class describes metadata carried
+    by a federation operator (mdq.incommon.org, mdq.ukfederation.org.uk, metadata.surfconext.nl),
+    and this entity is absent from the eduGAIN aggregate and self-published from UGM's own host.
+    Calling it federated would assert an inter-federation membership that the probe disproved. The
+    surface class is identity federation; the operator is the institution alone.
+  x-entity-id: https://sso.ugm.ac.id/idp/shibboleth
+  x-sso-endpoint: https://sso.ugm.ac.id/idp/profile/SAML2/Redirect/SSO
+  x-scope: ac.id
+  x-probe:
+    baseURL_status: 200
+    baseURL_bytes: 6379
+    entity_id_url_status: 200
+    edugain_present: false
+    edugain_checked: 'https://technical.edugain.org/api.php?action=list_entities&format=json — 10616 entities, no ugm.ac.id entity'
+    probed: '2026-09-01'
+- aid: gadjah-mada-university:repository-oai-pmh
+  name: UGM Institutional Repository OAI-PMH
+  description: >-
+    OAI-PMH 2.0 metadata harvesting endpoint for "repository civitas UGM", the institutional
+    repository running EPrints 3.3.15 on the university's own host. Verified live on 2026-09-01 —
+    Identify returns repositoryName "repository civitas UGM" and adminEmail library@ugm.ac.id with
+    an earliest datestamp of 2014-01-06, ListMetadataFormats offers six prefixes (oai_dc, didl,
+    mets, oai_bibl, rdf, uketd_dc), and ListIdentifiers returns 100 real identifiers in the first
+    page. deletedRecord is "persistent", the strongest reversibility commitment the protocol offers.
+    The software is EPrints; the deployment, host, content and administration are UGM's, so the
+    endpoint is institution-operated even though the code is not UGM's. Two real defects: the
+    HTTPS origin returns 403 from an edge filter while HTTP returns 200 — the pointers here are
+    deliberately http:// for that reason — and metadataPolicy, dataPolicy and submissionPolicy are
+    all left at the EPrints default "this server has not yet been fully configured" text, so a
+    harvester is told to assume no rights are granted.
+  humanURL: http://repository.ugm.ac.id/
+  baseURL: http://repository.ugm.ac.id/cgi/oai2
+  tags: [Repository, OAI-PMH, Library, Metadata, Research, EPrints]
+  properties:
+  - type: OpenAPI
+    url: openapi/gadjah-mada-university-repository-oai-pmh-openapi.yml
+  - type: Documentation
+    url: http://repository.ugm.ac.id/information.html
+  - type: Conformance
+    url: conformance/gadjah-mada-university-conformance.yml
+  - type: Examples
+    url: examples/gadjah-mada-university-ugm-id-examples.yml
+  x-operator: institution
+  x-operator-evidence: >-
+    repository.ugm.ac.id is under the institution's own registrable domain; Identify names
+    library@ugm.ac.id as the administrator and "repository civitas UGM" as the repository. No
+    vendor host, no vendor contact, no shared contract — EPrints is the software, not the operator.
+  x-contract-note: >-
+    The OpenAPI under this entry is method:derived — OUR rendering of the standardised OAI-PMH 2.0
+    protocol bound to a verified live endpoint. UGM authored no specification for this surface and
+    must not be credited as though it had.
+  x-probe:
+    baseURL_status: 200
+    https_variant_status: 403
+    documentation_status: 200
+    list_metadata_formats_status: 200
+    list_identifiers_status: 200
+    identifiers_in_first_page: 100
+    probed: '2026-09-01'
+- aid: gadjah-mada-university:journal-oai-pmh
+  name: UGM Journals OAI-PMH
+  description: >-
+    OAI-PMH 2.0 metadata harvesting endpoint for "Jurnal Universitas Gadjah Mada", the
+    university-wide scholarly journal platform running Open Journal Systems 2.4.8.1 on UGM's own
+    host, administered by bpp.jurnal@ugm.ac.id. Verified live on 2026-09-01 — Identify, five
+    metadata prefixes (oai_dc, marcxml, oai_marc, nlm, rfc1807), 100 setSpecs and 100 real records
+    in the first page, with gzip and deflate compression advertised. Each journal and section is an
+    OAI set, and articles carry DOIs under UGM's own Crossref prefix 10.22146. This surface was
+    missing entirely from the June 2026 profile. The lifecycle risk is stated plainly: OJS 2.4.8.1
+    is the last release of an end-of-life line, and a partial migration to OJS 3 is visibly under
+    way with no published schedule.
+  humanURL: https://journal.ugm.ac.id/
+  baseURL: https://journal.ugm.ac.id/index/oai
+  tags: [Journals, OAI-PMH, Scholarly Publishing, Metadata, Research, OJS, Crossref]
+  properties:
+  - type: OpenAPI
+    url: openapi/gadjah-mada-university-journal-oai-pmh-openapi.yml
+  - type: Documentation
+    url: https://journal.ugm.ac.id/
+  - type: Conformance
+    url: conformance/gadjah-mada-university-conformance.yml
+  - type: Lifecycle
+    url: lifecycle/gadjah-mada-university-lifecycle.yml
+  x-operator: institution
+  x-operator-evidence: >-
+    journal.ugm.ac.id is under the institution's own registrable domain; Identify names
+    bpp.jurnal@ugm.ac.id (UGM's Publishing and Publication Board) as administrator and
+    "Jurnal Universitas Gadjah Mada" as the repository. OJS is PKP's software, not its operator,
+    and this is a self-hosted deployment rather than a hosted tenancy.
+  x-contract-note: >-
+    The OpenAPI under this entry is method:derived — our rendering of the OAI-PMH 2.0 protocol
+    bound to a verified endpoint. No PKP or OJS product specification is saved under this slug.
+  x-probe:
+    baseURL_status: 200
+    identify_bytes: 1930
+    list_metadata_formats_status: 200
+    list_sets_status: 200
+    sets_in_first_page: 100
+    list_records_status: 200
+    records_in_first_page: 100
+    probed: '2026-09-01'
+- aid: gadjah-mada-university:sso-cas
+  name: UGM Single Sign-On (CAS)
+  description: >-
+    Central Authentication Service at sso.ugm.ac.id/cas, the login surface UGM systems redirect
+    users to. A bare GET redirects to /cas/login and returns the login form (200, verified
+    2026-09-01). CAS defines a machine-readable /serviceValidate response, but UGM publishes no
+    service-registration route, no protocol documentation and no developer-facing contract for it,
+    so it is recorded as an authentication surface rather than as an API. It sits alongside, not
+    behind, the OAuth server and the Shibboleth IdP — three institution-operated identity stacks.
+  humanURL: https://dti.ugm.ac.id/knowledge-base/akses-365
+  baseURL: https://sso.ugm.ac.id/cas
+  tags: [Authentication, SSO, CAS, Identity]
+  properties:
+  - type: Authentication
+    url: authentication/gadjah-mada-university-authentication.yml
+  - type: Documentation
+    url: https://dti.ugm.ac.id/knowledge-base/akses-365
+  x-operator: institution
+  x-operator-evidence: >-
+    sso.ugm.ac.id is under the institution's own registrable domain and hosts the Shibboleth IdP on
+    the same origin.
+  x-probe:
+    baseURL_status: 200
+    baseURL_effective: https://sso.ugm.ac.id/cas/login
+    documentation_status: 200
+    probed: '2026-09-01'
+- aid: gadjah-mada-university:elok-moodle-webservices
+  name: eLOK Moodle Web Services (institution deployment)
+  description: >-
+    UGM's self-hosted Moodle learning platform, eLOK, at elok.ugm.ac.id, with Moodle Web Services
+    enabled and token-gated. Verified live on 2026-09-01: /webservice/rest/server.php returns the
+    Moodle exception <ERRORCODE>invalidtoken</ERRORCODE> — the service is on and wants a token,
+    rather than reporting web services disabled — and /login/token.php (200) issues tokens for
+    username and password. The deployment, the host, the courses and the operations are UGM's. The
+    CONTRACT is Moodle HQ's product API, so no Moodle specification is saved under this slug and no
+    Moodle engineering is credited to the institution; this entry records the relationship and the
+    verified deployment only.
+  humanURL: https://elok.ugm.ac.id/
+  baseURL: https://elok.ugm.ac.id/webservice/rest/server.php
+  tags: [Learning Management, Moodle, Education, Students, Authentication]
+  properties:
+  - type: Documentation
+    url: https://elok.ugm.ac.id/
+  x-operator: institution
+  x-operator-evidence: >-
+    elok.ugm.ac.id is under the institution's own registrable domain and the platform is
+    self-hosted, not a hosted MoodleCloud tenancy. Moodle markup confirmed in the served HTML.
+  x-contract-owner: >-
+    Moodle HQ. This is the `shared_contract` class — the host verdict is institution and correct,
+    and the specification would still be the product's. No product spec is held here.
+  x-probe:
+    baseURL_status: 200
+    baseURL_body: '<EXCEPTION class="core\exception\moodle_exception"><ERRORCODE>invalidtoken</ERRORCODE></EXCEPTION>'
+    token_endpoint_status: 200
+    homepage_status: 200
+    probed: '2026-09-01'
+- aid: gadjah-mada-university:crossref-membership
+  name: Crossref membership (member 9411, prefix 10.22146)
+  description: >-
+    Universitas Gadjah Mada is a Crossref member in its own name — member id 9411, DOI prefix
+    10.22146 — verified live on 2026-09-01 against the Crossref REST API. Every DOI minted by UGM's
+    journals begins with that prefix, which links the registry membership to the institution-operated
+    journal platform. This is a FACT ABOUT THE INSTITUTION recorded through a registry it is
+    registered in. Crossref's own API contract belongs to Crossref and is deliberately not saved
+    here; the relationship is the finding.
+  humanURL: https://www.crossref.org/
+  baseURL: https://api.crossref.org/prefixes/10.22146
+  tags: [DOI, Crossref, Registry, Scholarly Publishing, Persistent Identifiers]
+  properties:
+  - type: Conformance
+    url: conformance/gadjah-mada-university-conformance.yml
+  - type: x-registry-record
+    url: https://api.crossref.org/members/9411
+  x-operator: registry
+  x-registrant-id: '9411'
+  x-doi-prefix: '10.22146'
+  x-probe:
+    baseURL_status: 200
+    member_record_status: 200
+    detail: 'api.crossref.org/prefixes/10.22146 returns member https://id.crossref.org/member/9411, name "Universitas Gadjah Mada"'
+    probed: '2026-09-01'
+- aid: gadjah-mada-university:ror-record
+  name: ROR organization record (ror.org/03ke6d638)
+  description: >-
+    Universitas Gadjah Mada's Research Organization Registry identifier, https://ror.org/03ke6d638,
+    verified live on 2026-09-01 against the ROR v2 API. The persistent, machine-readable identifier
+    for the institution as an organisation, and the join key between UGM's name and its research
+    output across every scholarly system. A membership fact, not a contract — ROR's API is ROR's.
+  humanURL: https://ror.org/03ke6d638
+  baseURL: https://api.ror.org/v2/organizations/03ke6d638
+  tags: [Registry, Persistent Identifiers, ROR, Research, Organization Identity]
+  properties:
+  - type: x-registry-record
+    url: https://ror.org/03ke6d638
+  x-operator: registry
+  x-ror-id: https://ror.org/03ke6d638
+  x-probe:
+    detail: 'api.ror.org/v2/organizations?query=Gadjah%20Mada returns ror.org/03ke6d638, ror_display name "Universitas Gadjah Mada", links [https://ugm.ac.id]'
+    status: 200
+    probed: '2026-09-01'
 common:
-  - type: DomainSecurity
-    url: security/gadjah-mada-university-domain-security.yml
-  - type: Website
-    url: https://ugm.ac.id/en/
-  - type: GitHub
-    url: https://github.com/ugm-ac-id
-  - type: LinkedIn
-    url: https://www.linkedin.com/school/universitas-gadjah-mada/
-  - type: Plans
-    url: plans/gadjah-mada-university-plans-pricing.yml
-  - type: RateLimits
-    url: rate-limits/gadjah-mada-university-rate-limits.yml
-  - type: FinOps
-    url: finops/gadjah-mada-university-finops.yml
-  - type: Review
-    url: review.yml
-  - type: x-json-ld
-    url: json-ld/gadjah-mada-university-context.jsonld
-  - type: x-blogs
-    url: blogs/blogs.json
+- type: Website
+  url: https://ugm.ac.id/en/
+- type: APIReference
+  url: https://oauth.simaster.ugm.ac.id/docs
+- type: Documentation
+  url: https://oauth.simaster.ugm.ac.id/openapi.json
+- type: Status
+  url: https://oauth.simaster.ugm.ac.id/health
+- type: PrivacyPolicy
+  url: https://ugm.ac.id/en/privacy-policy/
+- type: Blog
+  url: https://ugm.ac.id/en/news/
+- type: BlogRSS
+  url: https://ugm.ac.id/en/feed/
+- type: Support
+  url: https://dti.ugm.ac.id/knowledge-base/
+- type: IdentityFederation
+  url: https://sso.ugm.ac.id/idp/profile/Metadata/SAML
+- type: ResearchRepository
+  url: http://repository.ugm.ac.id/
+- type: LibraryCatalog
+  url: https://opac.lib.ugm.ac.id/
+- type: ScholarlyPublishing
+  url: https://journal.ugm.ac.id/
+- type: CourseCatalog
+  url: https://akademik.ugm.ac.id/
+- type: AIPolicy
+  url: https://web.ugm.ac.id/etika-penggunaan-ai/
+- type: AITooling
+  url: https://lib.ugm.ac.id/file/panduan-penggunaan-genai/
+- type: GitHub
+  url: https://github.com/ugm-ac-id
+- type: LinkedIn
+  url: https://www.linkedin.com/school/universitas-gadjah-mada/
+- type: Authentication
+  url: authentication/gadjah-mada-university-authentication.yml
+- type: Scopes
+  url: scopes/gadjah-mada-university-scopes.yml
+- type: Conformance
+  url: conformance/gadjah-mada-university-conformance.yml
+- type: Errors
+  url: errors/gadjah-mada-university-errors.yml
+- type: Lifecycle
+  url: lifecycle/gadjah-mada-university-lifecycle.yml
+- type: Rules
+  url: rules/gadjah-mada-university-rules.yml
+- type: Vocabulary
+  url: vocabulary/gadjah-mada-university-vocabulary.yml
+- type: Examples
+  url: examples/gadjah-mada-university-ugm-id-examples.yml
+- type: JSONSchema
+  url: json-schema/gadjah-mada-university-ugm-id-schemas.json
+- type: DomainSecurity
+  url: security/gadjah-mada-university-domain-security.yml
+- type: Plans
+  url: plans/gadjah-mada-university-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/gadjah-mada-university-rate-limits.yml
+- type: FinOps
+  url: finops/gadjah-mada-university-finops.yml
+- type: Review
+  url: review.yml
+- type: x-json-ld
+  url: json-ld/gadjah-mada-university-context.jsonld
+- type: x-blogs
+  url: blogs/blogs.json
+x-coverage:
+  state: covered
+  reason: covered
+  detail: >-
+    Six institution-operated surfaces found and verified by live probe on 2026-09-01, and one of
+    them is a genuine first-party contract: UGM publishes its own OpenAPI 3.1.0 document for UGM ID
+    at https://oauth.simaster.ugm.ac.id/openapi.json (200, 19677 bytes, servers[] both under
+    ugm.ac.id, info.title "UGM ID", written in Indonesian, no vendor named), served behind its own
+    Swagger UI. Around it sit an OIDC Discovery document, an RFC 8414 metadata document, a public
+    /health endpoint, a self-published Shibboleth SAML 2.0 IdP, a CAS server, and two independent
+    OAI-PMH 2.0 endpoints — the EPrints repository and the OJS journal platform — both exercised
+    through Identify, ListMetadataFormats, ListSets and ListRecords/ListIdentifiers with real data
+    returned. Two registry relationships are recorded as facts about the institution rather than as
+    its contracts: Crossref member 9411 with prefix 10.22146, and ROR 03ke6d638. One deployment,
+    eLOK's Moodle Web Services, is recorded as a relationship with the contract left to Moodle. No
+    vendor contract was found in this repo and none was added; nothing was removed. The absences
+    are stated as findings, not gaps in the probe: data.ugm.ac.id returns HTTP 200 serving a
+    "UGM - Maintenance" soft-404 so there is no open data portal, api.ugm.ac.id and hpc.ugm.ac.id do
+    not resolve, no public course/timetable/registrar API exists, github.com/ugm-ac-id is a real but
+    empty org with zero public repositories, ai.ugm.ac.id 502s, the main site's WordPress REST API
+    returns a machine-readable 401 refusal, and the entire /.well-known/ path on ugm.ac.id is 403'd
+    at the edge so the absence of security.txt cannot be distinguished from a block. Four of the
+    twelve education-regime domain standards are evidenced against fetched artifacts: oai-pmh, saml,
+    shibboleth and crossref. The 2026-06-03 profile recorded two surfaces and missed the OpenAPI,
+    the journal platform, the SAML IdP and both registry memberships entirely.
+  assessed: '2026-09-01'
+  method: pipeline-university + live probe
+  institution_surfaces: 6
+  tenant_surfaces: 0
+  registry_surfaces: 2
+  federation_surfaces: 0
+  federation_note: >-
+    UGM runs a Shibboleth SAML 2.0 IdP — an identity-federation surface class — but it is
+    self-published and absent from eduGAIN, so it is counted as institution-operated rather than
+    as a federation membership.
+  vendor_surfaces_removed: 0
+  contracts_saved: 1
+  contracts_derived: 2
+  evidence:
+  - url: https://oauth.simaster.ugm.ac.id/openapi.json
+    status: 200
+    note: OpenAPI 3.1.0, 19677 bytes, UGM's own. Saved to openapi/_original/.
+  - url: https://oauth.simaster.ugm.ac.id/docs
+    status: 200
+    note: Swagger UI, loads /openapi.json.
+  - url: https://oauth.simaster.ugm.ac.id/.well-known/openid-configuration
+    status: 200
+  - url: https://oauth.simaster.ugm.ac.id/.well-known/oauth-authorization-server
+    status: 200
+  - url: https://oauth.simaster.ugm.ac.id/.well-known/jwks.json
+    status: 200
+    note: 'Empty key set: {"keys":[]} while RS256 id_tokens are advertised.'
+  - url: https://oauth.simaster.ugm.ac.id/health
+    status: 200
+    note: '{"services":{"database":"up","redis":"up","simaster":"up"},"status":"ok"}'
+  - url: https://oauth.simaster.ugm.ac.id/api/me
+    status: 401
+    note: Correct status, HTML body instead of the declared ErrorResponse schema.
+  - url: https://oauth.simaster.ugm.ac.id/oauth/token
+    status: 401
+    note: POST with no credentials returns a correct RFC 6749 invalid_client error object.
+  - url: https://oauth.simaster.ugm.ac.id/definitely-not-a-real-path-12345
+    status: 404
+    note: Genuine 404 — negative probe confirms no soft-404 behaviour.
+  - url: https://oauth.dev.ugm.ac.id/.well-known/openid-configuration
+    status: 403
+    note: Declared in servers[] as the Development Server; refuses anonymous callers.
+  - url: https://sso.ugm.ac.id/idp/profile/Metadata/SAML
+    status: 200
+    note: 6379 bytes of SAML metadata, entityID https://sso.ugm.ac.id/idp/shibboleth.
+  - url: https://sso.ugm.ac.id/idp/shibboleth
+    status: 200
+  - url: https://sso.ugm.ac.id/cas
+    status: 200
+    note: Redirects to /cas/login.
+  - url: http://repository.ugm.ac.id/cgi/oai2?verb=Identify
+    status: 200
+  - url: http://repository.ugm.ac.id/cgi/oai2?verb=ListIdentifiers&metadataPrefix=oai_dc
+    status: 200
+    note: 100 identifiers in the first page.
+  - url: https://repository.ugm.ac.id/cgi/oai2?verb=Identify
+    status: 403
+    note: HTTPS origin blocked at the edge while HTTP returns 200. Pointers are http:// on purpose.
+  - url: http://repository.ugm.ac.id/information.html
+    status: 200
+  - url: https://journal.ugm.ac.id/index/oai?verb=Identify
+    status: 200
+  - url: https://journal.ugm.ac.id/index/oai?verb=ListRecords&metadataPrefix=oai_dc
+    status: 200
+    note: 100 records in the first page.
+  - url: https://elok.ugm.ac.id/webservice/rest/server.php
+    status: 200
+    note: Moodle Web Services enabled — returns invalidtoken, not service-disabled.
+  - url: https://elok.ugm.ac.id/login/token.php
+    status: 200
+  - url: https://api.crossref.org/prefixes/10.22146
+    status: 200
+    note: Member 9411, "Universitas Gadjah Mada".
+  - url: https://api.ror.org/v2/organizations?query=Gadjah%20Mada
+    status: 200
+    note: ror.org/03ke6d638.
+  - url: https://api.datacite.org/clients?query=gadjah
+    status: 200
+    note: Zero results — no DataCite registration.
+  - url: https://technical.edugain.org/api.php?action=list_entities&format=json
+    status: 200
+    note: 10616 entities, no ugm.ac.id entity — the IdP is not inter-federated.
+  - url: https://data.ugm.ac.id/
+    status: 200
+    note: SOFT-404. Serves "UGM - Maintenance", body class page-404. No open data portal exists.
+  - url: https://ai.ugm.ac.id/
+    status: 502
+    note: Dead. Not recorded as a pointer.
+  - url: https://ugm.ac.id/wp-json/
+    status: 401
+    note: '{"code":"rest_cannot_access","message":"DRA: Only authenticated users can access the REST API."}'
+  - url: https://ugm.ac.id/.well-known/security.txt
+    status: 403
+    note: The whole /.well-known/ path is blocked at the edge — absence is indistinguishable from a block.
+  - url: https://api.ugm.ac.id/
+    status: 0
+    note: Does not resolve. No central API host.
+  - url: https://hpc.ugm.ac.id/
+    status: 0
+    note: Does not resolve. No research-computing service catalog found.
+  - url: https://github.com/ugm-ac-id
+    status: 200
+    note: Real org, zero public repositories, no description, unverified.
+  - url: https://ugm.ac.id/en/
+    status: 200
+  - url: https://ugm.ac.id/en/privacy-policy/
+    status: 200
+  - url: https://ugm.ac.id/en/feed/
+    status: 200
+    note: RSS.
+  - url: https://ugm.ac.id/en/news/
+    status: 200
+  - url: https://akademik.ugm.ac.id/
+    status: 200
+    note: Academic directorate. Human HTML only — no course API behind it.
+  - url: https://opac.lib.ugm.ac.id/
+    status: 200
+    note: In-house library catalog ("UGM Framework"), not Primo/Alma/SLiMS. No API surface found.
+  - url: https://web.ugm.ac.id/etika-penggunaan-ai/
+    status: 200
+  - url: https://lib.ugm.ac.id/file/panduan-penggunaan-genai/
+    status: 200
+  - url: https://dti.ugm.ac.id/knowledge-base/
+    status: 200
+  - url: https://dashboard.ugm.ac.id/public/sdgs/view/
+    status: 200
+    note: Public SDGs dashboard, human HTML. No underlying data API found.
+  - url: https://analytics.penelitian.ugm.ac.id/
+    status: 403
+    note: Bot-blocked. Live and unreadable, not dead.
+  - url: https://simaster.ugm.ac.id/api
+    status: 403
+    note: SIS refuses anonymous callers at the edge.
+  - url: https://www.linkedin.com/school/universitas-gadjah-mada/
+    status: 999
+    note: LinkedIn bot challenge. Live and blocked, not dead.
+x-attribution-note:
+  date: '2026-09-01'
+  summary: >-
+    No misattribution was found in this repository and nothing was removed. The 2026-06-03 profile
+    was thin rather than wrong: it recorded two institution-operated surfaces and missed four more,
+    including UGM's own published OpenAPI. Every surface added on 2026-09-01 carries an x-operator
+    settled before the artifact was saved. Only ONE contract is credited to UGM as authored — the
+    UGM ID OpenAPI, which UGM publishes itself. The two OAI-PMH OpenAPIs are marked method:derived
+    and are ours, not theirs. No vendor product specification (EPrints, OJS/PKP, Moodle) is held
+    under this slug. Expect this repository's Kin Score to RISE, and unlike most of this cohort the
+    rise is measuring the institution's own engineering.
 maintainers:
-  - FN: Kin Lane
-    email: kin@apievangelist.com
+- FN: Kin Lane
+  email: kin@apievangelist.com
