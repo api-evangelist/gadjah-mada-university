@@ -436,16 +436,16 @@ apis:
     url: https://journal.ugm.ac.id/
   - type: Lifecycle
     url: lifecycle/gadjah-mada-university-lifecycle.yml
-- aid: gadjah-mada-university:gadjah-mada-university-oauth2-api
-  name: Gadjah Mada University O Auth2 API
-  description: Endpoint inti OAuth2/OIDC
+- aid: gadjah-mada-university:gadjah-mada-university-social-login-api
+  name: Gadjah Mada University Social Login API
+  description: Social provider login (Google, Microsoft, Facebook, LinkedIn)
   humanURL: https://oauth.simaster.ugm.ac.id/docs
   baseURL: https://oauth.simaster.ugm.ac.id
   tags:
-  - OAuth2
+  - Social Login
   properties:
   - type: OpenAPI
-    url: openapi/gadjah-mada-university-oauth2-api-openapi.yml
+    url: openapi/gadjah-mada-university-social-login-api-openapi.yml
   - type: x-openapi-original
     url: openapi/_original/gadjah-mada-university-ugm-id-openapi.json
   - type: APIReference
@@ -478,16 +478,16 @@ apis:
     url: https://journal.ugm.ac.id/
   - type: Lifecycle
     url: lifecycle/gadjah-mada-university-lifecycle.yml
-- aid: gadjah-mada-university:gadjah-mada-university-social-login-api
-  name: Gadjah Mada University Social Login API
-  description: Social provider login (Google, Microsoft, Facebook, LinkedIn)
-  humanURL: https://oauth.simaster.ugm.ac.id/docs
-  baseURL: https://oauth.simaster.ugm.ac.id
+- aid: gadjah-mada-university:gadjah-mada-university-oauth2-api
+  name: Gadjah Mada University O Auth2 API
+  description: Endpoint inti OAuth2/OIDC
+  humanURL: https://sso.ugm.ac.id/
+  baseURL: https://sso.ugm.ac.id/idp/profile/Metadata/SAML
   tags:
-  - Social Login
+  - OAuth2
   properties:
   - type: OpenAPI
-    url: openapi/gadjah-mada-university-social-login-api-openapi.yml
+    url: openapi/gadjah-mada-university-oauth2-api-openapi.yml
   - type: x-openapi-original
     url: openapi/_original/gadjah-mada-university-ugm-id-openapi.json
   - type: APIReference
