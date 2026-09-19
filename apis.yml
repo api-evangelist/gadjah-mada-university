@@ -273,7 +273,8 @@ apis:
   description: Resource API (butuh Bearer token)
   humanURL: https://oauth.simaster.ugm.ac.id/docs
   baseURL: https://oauth.simaster.ugm.ac.id
-  tags:
+  tags: []
+  tags_raw:
   - API
   properties:
   - type: OpenAPI
@@ -484,6 +485,8 @@ apis:
   humanURL: https://sso.ugm.ac.id/
   baseURL: https://sso.ugm.ac.id/idp/profile/Metadata/SAML
   tags:
+  - Authentication
+  tags_raw:
   - OAuth2
   properties:
   - type: OpenAPI
