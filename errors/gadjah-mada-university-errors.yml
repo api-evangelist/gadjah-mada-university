@@ -1,0 +1,124 @@
+---
+generated: '2026-09-01'
+method: probed
+source: >-
+  Live probes on 2026-09-01, including deliberate negative probes against real path shapes rather
+  than nonsense paths, so a soft-404 would have been detected if present. All probes were run
+  against hosts under the ugm.ac.id registrable domain.
+x-operator: institution
+
+summary: >-
+  UGM ID returns honest HTTP status codes and, on the OAuth endpoints specifically, standards-shaped
+  machine-readable errors: POST /oauth/token with no client credentials returns 401 with a correct
+  RFC 6749 section 5.2 error object. The gap is on the RESOURCE endpoints - /api/me, /user/me,
+  /userinfo and /user/username/{username} all answer an unauthenticated caller with a 4559-byte
+  branded HTML page instead of JSON, so an agent gets the right status code and an unparseable body.
+  There is no problem+json, no error-code catalogue, and no documented retry or backoff guidance
+  anywhere. The two OAI-PMH surfaces follow the protocol's own convention of reporting errors
+  inside a 200 body, which is correct for OAI-PMH and hostile to generic HTTP clients.
+
+surfaces:
+
+- surface: UGM ID (OAuth 2.0 / OIDC)
+  base: https://oauth.simaster.ugm.ac.id
+  x-operator: institution
+  machine_readable_errors: partial
+  media_type_on_error:
+    oauth_endpoints: application/json
+    resource_endpoints: text/html; charset=utf-8
+    unknown_path: text/html; charset=utf-8
+  declared_in_openapi: true
+  error_schema: ErrorResponse (components.schemas, OpenAPI 3.1.0)
+  observed:
+  - probe: POST https://oauth.simaster.ugm.ac.id/oauth/token (grant_type=client_credentials, no auth)
+    status: 401
+    content_type: application/json
+    body: '{"error": "invalid_client", "error_description": "The client cannot authenticate with methods: [''client_secret_basic'', ''client_secret_post'']"}'
+    note: >-
+      Correct RFC 6749 error object. The description embeds a Python list repr, which leaks the
+      implementation language into the public contract.
+  - probe: GET https://oauth.simaster.ugm.ac.id/api/me (no bearer token)
+    status: 401
+    content_type: text/html; charset=utf-8
+    bytes: 4559
+    note: HTML error page on a JSON API. Same on /user/me, /userinfo, /user/username/{username}.
+  - probe: GET https://oauth.simaster.ugm.ac.id/user/username/notarealuser999
+    status: 401
+    note: >-
+      Auth is checked before existence, so an unauthenticated caller cannot enumerate usernames.
+      That is the correct ordering and is recorded as a positive.
+  - probe: GET https://oauth.simaster.ugm.ac.id/oauth/token
+    status: 405
+    content_type: text/html; charset=utf-8
+    note: Correct Method Not Allowed on a POST-only endpoint. Same on /oauth/introspect.
+  - probe: GET https://oauth.simaster.ugm.ac.id/definitely-not-a-real-path-12345
+    status: 404
+    bytes: 207
+    note: >-
+      Genuine 404 from the framework's default handler - no soft-200, no SPA shell. Confirms the
+      negative probes above are real signals.
+  gaps:
+  - No application/problem+json (RFC 9457) anywhere.
+  - Resource endpoints return HTML rather than the declared ErrorResponse schema.
+  - No error code catalogue or documented remediation per code.
+  - No Retry-After, no documented backoff, no rate-limit error shape.
+
+- surface: UGM Institutional Repository OAI-PMH
+  base: http://repository.ugm.ac.id/cgi/oai2
+  x-operator: institution
+  machine_readable_errors: true
+  media_type_on_error: text/xml
+  observed:
+  - probe: http://repository.ugm.ac.id/cgi/oai2?verb=Identify
+    status: 200
+    note: Known-good request; valid OAI-PMH response.
+  - probe: https://repository.ugm.ac.id/cgi/oai2?verb=Identify
+    status: 403
+    bytes: 1874
+    note: >-
+      The HTTPS origin is blocked by an edge filter while the identical HTTP request returns 200.
+      This is a real availability defect, not a dead endpoint - a harvester following a modern
+      https-first policy will conclude the repository is gone. Pointers in apis.yml are therefore
+      recorded as http:// deliberately.
+  protocol_note: >-
+    OAI-PMH reports badVerb, badArgument, cannotDisseminateFormat and idDoesNotExist inside a
+    <error code="..."> element at HTTP 200. Machine-readable, standards-defined, and invisible to
+    any client that only reads status codes.
+
+- surface: UGM Journals OAI-PMH
+  base: https://journal.ugm.ac.id/index/oai
+  x-operator: institution
+  machine_readable_errors: true
+  media_type_on_error: text/xml
+  observed:
+  - probe: https://journal.ugm.ac.id/index/oai?verb=Identify
+    status: 200
+  - probe: https://journal.ugm.ac.id/index.php/index/oai?verb=Identify
+    status: 200
+    note: Both the clean and the index.php path forms resolve.
+
+- surface: Institutional web estate
+  base: https://ugm.ac.id
+  x-operator: institution
+  observed:
+  - probe: https://ugm.ac.id/wp-json/
+    status: 401
+    content_type: application/json
+    body: '{"code":"rest_cannot_access","message":"DRA: Only authenticated users can access the REST API.","data":{"status":401}}'
+    note: >-
+      A WordPress REST API exists behind the main site but is deliberately closed to anonymous
+      callers. Machine-readable refusal, correctly shaped. Recorded as a closed surface, not an API.
+  - probe: https://ugm.ac.id/.well-known/security.txt
+    status: 403
+    bytes: 1132
+    note: >-
+      The whole /.well-known/ path is 403'd by the edge with an identical 1132-byte body, so the
+      absence of security.txt and apis.json cannot be distinguished from a block. Recorded as
+      unreadable rather than absent.
+  - probe: https://data.ugm.ac.id/
+    status: 200
+    bytes: 2340
+    note: >-
+      200 serving a "UGM - Maintenance" page ("Mohon Maaf, Laman Sedang dalam Perbaikan"), body
+      class page-404. A soft-404. There is no open data portal - linking presence would have
+      recorded one that does not exist.

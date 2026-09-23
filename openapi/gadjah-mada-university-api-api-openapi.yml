@@ -1,0 +1,204 @@
+openapi: 3.2.0
+info:
+  description: Layanan OAuth 2.0 / OIDC Authorization Server untuk mengakses UGM API.
+  title: UGM ID API
+  version: '2.0'
+servers:
+- description: Production Server
+  url: https://oauth.simaster.ugm.ac.id
+- description: Development Server
+  url: https://oauth.dev.ugm.ac.id
+tags:
+- description: Resource API (butuh Bearer token)
+  name: api
+paths:
+  /api/me:
+    get:
+      description: Mengambil username, email, nama, picture, provider. Scope `user.read` diperlukan.
+      operationId: getMe
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserData'
+          description: Data user berhasil
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      security:
+      - BearerAuth: []
+      summary: Data User — Profil Dasar
+      tags:
+      - api
+  /user/me:
+    get:
+      description: 'Mengambil data lengkap user dari Simaster termasuk `user_tipe`, `identitas`,
+
+        dan `attributes`. Scope `userDetail.read` diperlukan.'
+      operationId: getUserMe
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetailData'
+          description: Data user lengkap berhasil
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      security:
+      - BearerAuth: []
+      summary: Data User — Profil Lengkap (Simaster)
+      tags:
+      - api
+  /user/username/{username}:
+    get:
+      description: 'Mengambil data user berdasarkan username. Scope `user.read` diperlukan.
+
+        Mengembalikan 404 jika tidak ditemukan.'
+      operationId: getUserByUsername
+      parameters:
+      - example: johndoe
+        in: path
+        name: username
+        required: true
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserDetailData'
+          description: Data user berhasil
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          description: User tidak ditemukan
+      security:
+      - BearerAuth: []
+      summary: Data User by Username
+      tags:
+      - api
+components:
+  schemas:
+    ErrorResponse:
+      properties:
+        error:
+          type: string
+        error_description:
+          type: string
+        message:
+          type: string
+      type: object
+    UserData:
+      description: Profil dasar user dari /api/me
+      properties:
+        email:
+          example: johndoe@ugm.ac.id
+          type: string
+        family_name:
+          type: string
+        given_name:
+          type: string
+        name:
+          type: string
+        picture:
+          type: string
+        provider:
+          enum:
+          - cas_sso
+          - google
+          - microsoft
+          - facebook
+          - linkedin
+          - apple
+          type: string
+        username:
+          example: johndoe
+          type: string
+      type: object
+    UserDetailData:
+      description: Profil lengkap user dari Simaster (/user/me, /user/username/:username)
+      properties:
+        attributes:
+          items:
+            properties:
+              id:
+                type: integer
+              is_default:
+                type: integer
+              user_identitas:
+                type: string
+              user_identitas_id:
+                type: integer
+              user_identitas_nomor:
+                type: string
+              user_tipe:
+                type: string
+              user_tipe_id:
+                type: integer
+            type: object
+          type: array
+        email:
+          example: johndoe@ugm.ac.id
+          type: string
+        is_blacklist:
+          example: false
+          type: boolean
+        nama_lengkap:
+          example: John Doe
+          type: string
+        total_attributes:
+          example: 3
+          type: integer
+        user_id:
+          example: 123456
+          type: integer
+        user_identitas:
+          example: ID STAFF
+          type: string
+        user_identitas_id:
+          example: 8
+          type: integer
+        user_identitas_nomor:
+          example: '12345'
+          type: string
+        user_tipe:
+          example: Karyawan
+          type: string
+        user_tipe_id:
+          example: 2
+          type: integer
+        username:
+          example: johndoe
+          type: string
+      type: object
+  responses:
+    Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+      description: Scope tidak mencukupi atau akses ditolak
+    Unauthorized:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+      description: Token tidak valid atau tidak disertakan
+  securitySchemes:
+    BasicAuth:
+      description: client_id:client_secret via Basic Auth header
+      scheme: basic
+      type: http
+    BearerAuth:
+      bearerFormat: JWT
+      description: Access token JWT dari /oauth/token
+      scheme: bearer
+      type: http

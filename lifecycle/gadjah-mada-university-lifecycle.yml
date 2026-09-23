@@ -1,0 +1,139 @@
+---
+generated: '2026-09-01'
+method: derived
+source: >-
+  Derived on 2026-09-01 from what UGM's own surfaces declare about themselves - version strings in
+  the OpenAPI and in the OAI-PMH Identify responses, the software banners those endpoints emit, and
+  the certificate dates in the SAML descriptor - plus negative probes for the lifecycle machinery
+  that turned out to be absent. No lifecycle policy is published by the institution; this artifact
+  records the observable state, not a stated commitment.
+x-operator: institution
+
+summary: >-
+  UGM publishes no versioning policy, no deprecation policy, no changelog and no status page for
+  any of its machine-readable surfaces. Version information exists but only as a bare string:
+  "UGM ID 2.0" in info.version, OAI-PMH protocolVersion 2.0 on both harvesting endpoints. There is
+  no route by which a consumer would learn that something changed, and the /health endpoint - the
+  one operational signal that does exist - reports its own version as the literal string "unknown".
+  The most consequential lifecycle fact on the estate is that two of the three identity stacks are
+  running software old enough to be a succession risk.
+
+surfaces:
+
+- surface: UGM ID (OAuth 2.0 / OIDC)
+  base: https://oauth.simaster.ugm.ac.id
+  x-operator: institution
+  declared_version: '2.0'
+  version_source: info.version in https://oauth.simaster.ugm.ac.id/openapi.json
+  versioning_scheme: none-in-path
+  note: >-
+    The version lives only in the specification document. Paths are unversioned (/oauth/token,
+    /api/me, /user/me), so a breaking change has nowhere to land except on the existing paths.
+  spec_versioning:
+    openapi_version: 3.1.0
+    spec_published_at: https://oauth.simaster.ugm.ac.id/openapi.json
+    pristine_copy: openapi/_original/gadjah-mada-university-ugm-id-openapi.json
+  deprecation:
+    policy_published: false
+    deprecated_operations: 0
+    signalled_in_spec: true
+    detail: >-
+      One deprecation IS signalled, in prose rather than machine-readably: the specification's own
+      description says client authentication method `none` is "untuk legacy client (akan dihapus di
+      masa depan)" - for legacy clients, to be removed in future. No date, no `deprecated: true`
+      flag on any operation, no Sunset or Deprecation header observed. The `password` grant is also
+      still advertised and is deprecated in OAuth 2.1.
+  changelog:
+    published: false
+  status_page:
+    published: false
+    substitute: https://oauth.simaster.ugm.ac.id/health
+    detail: >-
+      A machine-readable health endpoint exists and is public - {"services":{"database":"up",
+      "redis":"up","simaster":"up"},"status":"ok",...} - which is more operational transparency than
+      most of this cohort offers. It reports "version":"unknown", so it cannot be used to detect a
+      deployment.
+  environments:
+  - name: production
+    url: https://oauth.simaster.ugm.ac.id
+    status: 200
+  - name: development
+    url: https://oauth.dev.ugm.ac.id
+    status: 403
+    detail: >-
+      Declared in servers[] as "Development Server" but refuses anonymous callers at the edge.
+      A published-but-unreachable environment; recorded, not counted as a usable sandbox.
+
+- surface: UGM Institutional Repository OAI-PMH
+  base: http://repository.ugm.ac.id/cgi/oai2
+  x-operator: institution
+  declared_version: OAI-PMH 2.0
+  software: EPrints 3.3.15
+  software_age_note: >-
+    EPrints 3.3.15 dates from the 3.3.x line, superseded by EPrints 3.4. The endpoint works and
+    serves real records back to 2014-01-06, so this is a maintenance-currency observation, not an
+    outage.
+  content_window:
+    earliest_datestamp: '2014-01-06T06:46:00Z'
+    deleted_record_support: persistent
+    detail: >-
+      deletedRecord "persistent" is the strongest of the three OAI-PMH options - the repository
+      commits to retaining tombstones for deleted items indefinitely, which is exactly the
+      reversibility signal an incremental harvester needs.
+  governance_gap: >-
+    metadataPolicy, dataPolicy and submissionPolicy are all left at the EPrints default text
+    ("No metadata policy defined. This server has not yet been fully configured."). The protocol
+    provides the slot for a rights and reuse statement and UGM has not filled it, so a harvester is
+    told in the response body to assume NO rights are granted.
+  availability_defect:
+    detail: >-
+      https:// returns 403 from an edge filter while http:// returns 200. A consumer applying an
+      https-only policy sees this endpoint as gone.
+    probed: '2026-09-01'
+
+- surface: UGM Journals OAI-PMH
+  base: https://journal.ugm.ac.id/index/oai
+  x-operator: institution
+  declared_version: OAI-PMH 2.0
+  software: Open Journal Systems 2.4.8.1
+  software_age_note: >-
+    OJS 2.4.8.1 is the final release of the OJS 2.x line and is end-of-life; PKP's supported line is
+    OJS 3.x. UGM's own journal.ugm.ac.id landing page acknowledges this, pointing readers to
+    journals that have moved to OJS 3. The OAI-PMH endpoint remains fully functional. This is the
+    clearest lifecycle risk on the estate: a live, harvested, DOI-bearing scholarly platform running
+    unsupported software.
+  content_window:
+    deleted_record_support: persistent
+  migration_signal:
+    detail: >-
+      A partial platform migration is visibly in progress - the OJS 2 site links out to journals
+      already running OJS 3 on separate hosts. No migration schedule, no redirect map and no notice
+      to harvesters was found.
+
+- surface: Shibboleth SAML 2.0 IdP
+  base: https://sso.ugm.ac.id/idp/shibboleth
+  x-operator: institution
+  key_lifecycle:
+    certificate_not_before: '2014-12-16'
+    certificate_not_after: '2034-12-16'
+    detail: >-
+      A single signing certificate issued in December 2014 with a twenty-year validity, still in
+      use. No key rollover has occurred in eleven years and none is signalled in the metadata (only
+      one KeyDescriptor is present, so there is no overlap key staged for rotation).
+  metadata_publication:
+    self_published: true
+    federated: false
+    detail: >-
+      Published from the institution's own host only. Not present in the eduGAIN aggregate, so
+      there is no federation operator applying metadata refresh, expiry or validity windows. The
+      descriptor carries no validUntil and no cacheDuration, meaning a consumer has no instruction
+      about how long to cache it.
+
+gaps:
+- No changelog, release notes or version history on any surface.
+- No status page; /health is the only operational signal and it self-reports version "unknown".
+- No Deprecation or Sunset headers; the one deprecation is prose in a spec description.
+- No published support or end-of-life policy for any UGM-operated API.
+- No contact route for API consumers - the only addresses on any surface are library@ugm.ac.id and
+  bpp.jurnal@ugm.ac.id, both repository administration, and the OpenAPI declares no info.contact.
+- No terms of service or licence attached to any machine-readable surface.

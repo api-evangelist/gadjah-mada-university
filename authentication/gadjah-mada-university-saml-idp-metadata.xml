@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EntityDescriptor entityID="https://sso.ugm.ac.id/idp/shibboleth" xmlns="urn:oasis:names:tc:SAML:2.0:metadata" xmlns:ds="http://www.w3.org/2000/09/xmldsig#" xmlns:shibmd="urn:mace:shibboleth:metadata:1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"><IDPSSODescriptor protocolSupportEnumeration="urn:mace:shibboleth:1.0 urn:oasis:names:tc:SAML:1.1:protocol urn:oasis:names:tc:SAML:2.0:protocol"><Extensions><shibmd:Scope regexp="false">ac.id</shibmd:Scope></Extensions><KeyDescriptor use="signing"><ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIIDIDCCAgigAwIBAgIVAIxk8E6yD3Nz6Mt6+MNemIA4UJrOMA0GCSqGSIb3DQEB
+BQUAMBgxFjAUBgNVBAMMDXNzby51Z20uYWMuaWQwHhcNMTQxMjE2MDI1NDUyWhcN
+MzQxMjE2MDI1NDUyWjAYMRYwFAYDVQQDDA1zc28udWdtLmFjLmlkMIIBIjANBgkq
+hkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEArhfeeYVG3KtVVTWPj3hybDomVCQbhBSl
++W7Jlld45/e9E5cW+/EvhU6nkRmKQidW5kNYyB2fL7g4r/YES0FonZ+WsXQIbL3k
+dAfsoqf9mJAJc992Q9EHxufjsyQ9c6QOVQcBngeIvfhF5Fx0zipowXzFx3hVRXPl
+I3EQA08G4KPaEe/Wv/ZjMJRiFpJd3x6QxjHVEWBc5JOJtrbRf1JQZeGirrx1sane
+l9gqlKHW3u6G7pnFHFoWY+V/2mhJdTeOLnZpXXgPbY5y6912mBl/Qs4CL2kRs8vi
+IUq+vEfHSVN40c4hRTbI74SVRLIL4nPLsH4LNpPXQ3dxfiYe4b+8NQIDAQABo2Ew
+XzAdBgNVHQ4EFgQUMQohghJCmHNvkUVTxPHqBOAW2aUwPgYDVR0RBDcwNYINc3Nv
+LnVnbS5hYy5pZIYkaHR0cHM6Ly9zc28udWdtLmFjLmlkL2lkcC9zaGliYm9sZXRo
+MA0GCSqGSIb3DQEBBQUAA4IBAQAs3gIkXDm/MXxDRkNGTdwMDmZKfjppVmftK0dY
+tGZWFSp8IkJGXLkpCP30wu6S9USsSeM3f1J9DeQm8xmi35DkYHIfDl9YpDemSZuO
+ESZc8aUBt5a/moZLFTdF6J0l3TzhsvRha+C3BXgJ6WyNq/mT/6kMdZLURB3zwdj6
+z1pD3xvZ3/RTS3ycm9p7McoX53qPzO2N9xGVGvEmdilx5WYNkTyl29a46xu+eDfI
+nSTTvTqX+ceP2w33Iwkmb8PcHBPLBPMz/qYoPTI+mXF5Poj1xIIa4ic6mh15Esva
+E5nCwuyqvsgxITBjecWPeiV8v9FqW65jLttst2tQOKJxfdQS</ds:X509Certificate></ds:X509Data></ds:KeyInfo></KeyDescriptor><ArtifactResolutionService Binding="urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding" Location="https://sso.ugm.ac.id/idp/profile/SAML1/SOAP/ArtifactResolution" index="1"/><ArtifactResolutionService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://sso.ugm.ac.id/idp/profile/SAML2/SOAP/ArtifactResolution" index="2"/><SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://sso.ugm.ac.id/idp/profile/SAML2/Redirect/SLO"/><SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://sso.ugm.ac.id/idp/profile/SAML2/POST/SLO"/><SingleLogoutService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://sso.ugm.ac.id/idp/profile/SAML2/SOAP/SLO"/><NameIDFormat>urn:mace:shibboleth:1.0:nameIdentifier</NameIDFormat><NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</NameIDFormat><SingleSignOnService Binding="urn:mace:shibboleth:1.0:profiles:AuthnRequest" Location="https://sso.ugm.ac.id/idp/profile/Shibboleth/SSO"/><SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST" Location="https://sso.ugm.ac.id/idp/profile/SAML2/POST/SSO"/><SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST-SimpleSign" Location="https://sso.ugm.ac.id/idp/profile/SAML2/POST-SimpleSign/SSO"/><SingleSignOnService Binding="urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect" Location="https://sso.ugm.ac.id/idp/profile/SAML2/Redirect/SSO"/></IDPSSODescriptor><AttributeAuthorityDescriptor protocolSupportEnumeration="urn:oasis:names:tc:SAML:1.1:protocol urn:oasis:names:tc:SAML:2.0:protocol"><Extensions><shibmd:Scope regexp="false">ac.id</shibmd:Scope></Extensions><KeyDescriptor use="signing"><ds:KeyInfo><ds:X509Data><ds:X509Certificate>MIIGnTCCBYWgAwIBAgIQAxWMcDMRS02wq/mppTYjOTANBgkqhkiG9w0BAQUFADBIMQswCQYDVQQG
+EwJVUzEVMBMGA1UEChMMRGlnaUNlcnQgSW5jMSIwIAYDVQQDExlEaWdpQ2VydCBTZWN1cmUgU2Vy
+dmVyIENBMB4XDTEzMTAxMDAwMDAwMFoXDTE2MDIxMDEyMDAwMFowcTELMAkGA1UEBhMCSUQxEzAR
+BgNVBAgTCllvZ3lha2FydGExDzANBgNVBAcTBlNsZW1hbjEmMCQGA1UEChMdVW5pdmVyc2l0YXMg
+R2FkamFoIE1hZGEgKFVHTSkxFDASBgNVBAMMCyoudWdtLmFjLmlkMIIBIjANBgkqhkiG9w0BAQEF
+AAOCAQ8AMIIBCgKCAQEAnrp1t/rGLnS4Hb4Mswa3pEc+DN3Oj1hZSnelJv53qIl1yuFsmntemlsl
+wa5fptc4uAIghqB1kCabseeTmlcEL2KGcjiE28OyabSeaOCwdbzNbE0l7HQ1mFpYlXBtDTDSpkTC
+MPI9WKNZIQexm1FfS/+rPSbLYapzMRnwd4WV3E5L2HtwXkidJP4KQbwBMFR1nreUJEVcUB42FfN1
+omTcRUwpPHPN2XPcOOTkKCrU5E9s4RXBuNjEnJ1/dpmowTMu92Bo0xUoGWu/3xVS18XpqLRIClu5
+FQdaOlCGxWApeGiE32x9KbAfJtcZXzWQRR3V/LHSLm5Azwa07QE77ljhawIDAQABo4IDWDCCA1Qw
+HwYDVR0jBBgwFoAUkHHbN+tzyO/c1R4StjS6K1qgppIwHQYDVR0OBBYEFNqZiPTXL0kAzUhxllNo
+VZ8+6Sm+MDAGA1UdEQQpMCeCCyoudWdtLmFjLmlkggl1Z20uYWMuaWSCDXNzby51Z20uYWMuaWQw
+DgYDVR0PAQH/BAQDAgWgMB0GA1UdJQQWMBQGCCsGAQUFBwMBBggrBgEFBQcDAjBhBgNVHR8EWjBY
+MCqgKKAmhiRodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vc3NjYS1nNS5jcmwwKqAooCaGJGh0dHA6
+Ly9jcmw0LmRpZ2ljZXJ0LmNvbS9zc2NhLWc1LmNybDCCAcQGA1UdIASCAbswggG3MIIBswYJYIZI
+AYb9bAEBMIIBpDA6BggrBgEFBQcCARYuaHR0cDovL3d3dy5kaWdpY2VydC5jb20vc3NsLWNwcy1y
+ZXBvc2l0b3J5Lmh0bTCCAWQGCCsGAQUFBwICMIIBVh6CAVIAQQBuAHkAIAB1AHMAZQAgAG8AZgAg
+AHQAaABpAHMAIABDAGUAcgB0AGkAZgBpAGMAYQB0AGUAIABjAG8AbgBzAHQAaQB0AHUAdABlAHMA
+IABhAGMAYwBlAHAAdABhAG4AYwBlACAAbwBmACAAdABoAGUAIABEAGkAZwBpAEMAZQByAHQAIABD
+AFAALwBDAFAAUwAgAGEAbgBkACAAdABoAGUAIABSAGUAbAB5AGkAbgBnACAAUABhAHIAdAB5ACAA
+QQBnAHIAZQBlAG0AZQBuAHQAIAB3AGgAaQBjAGgAIABsAGkAbQBpAHQAIABsAGkAYQBiAGkAbABp
+AHQAeQAgAGEAbgBkACAAYQByAGUAIABpAG4AYwBvAHIAcABvAHIAYQB0AGUAZAAgAGgAZQByAGUA
+aQBuACAAYgB5ACAAcgBlAGYAZQByAGUAbgBjAGUALjB4BggrBgEFBQcBAQRsMGowJAYIKwYBBQUH
+MAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBCBggrBgEFBQcwAoY2aHR0cDovL2NhY2VydHMu
+ZGlnaWNlcnQuY29tL0RpZ2lDZXJ0U2VjdXJlU2VydmVyQ0EuY3J0MAwGA1UdEwEB/wQCMAAwDQYJ
+KoZIhvcNAQEFBQADggEBAGV5f634mB7pGco+HsvBe4hKqV+vY0CYDHzIMMY4iLkiGqTh05ALLdl3
+CaIV7CLCsVSGQeUzky5pKZfEKMWIVxF5gsWy+ga2mm02iqG0SOgKlQQzQLMZptrmCOLkkM0bDxD1
+D/Q9pNYk/Jt1pcBHDuGmGasYI+rMZPbcqPyP6+BdqrVcIcdNSmvhuWqUPzA5XCxEiEk0RSeT7KIk
+I1RDK4k3CCR2ggp72WscGLYpzuRmp/KtY1U6JgLoxv7TA7OKlhHe9atJQk1xWsSBBjxyeDyPXk4Z
+ch1EnCFuxJf/74duzNLG11aG8IKzKqSm6hphLRZxY3TJkc39xSE68N4dhn0=</ds:X509Certificate></ds:X509Data></ds:KeyInfo></KeyDescriptor><AttributeService Binding="urn:oasis:names:tc:SAML:1.0:bindings:SOAP-binding" Location="https://sso.ugm.ac.id/idp/profile/SAML1/SOAP/AttributeQuery"/><AttributeService Binding="urn:oasis:names:tc:SAML:2.0:bindings:SOAP" Location="https://sso.ugm.ac.id/idp/profile/SAML2/SOAP/AttributeQuery"/><NameIDFormat>urn:mace:shibboleth:1.0:nameIdentifier</NameIDFormat><NameIDFormat>urn:oasis:names:tc:SAML:2.0:nameid-format:transient</NameIDFormat></AttributeAuthorityDescriptor></EntityDescriptor>

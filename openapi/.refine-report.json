@@ -1,0 +1,40 @@
+{
+  "provider": "gadjah-mada-university",
+  "sources": [
+    "_original/gadjah-mada-university-journal-oai-pmh-openapi.yml",
+    "_original/gadjah-mada-university-repository-oai-pmh-openapi.yml",
+    "_original/gadjah-mada-university-ugm-id-openapi.json"
+  ],
+  "outputs": [
+    "gadjah-mada-university-oai-pmh-api-openapi.yml",
+    "gadjah-mada-university-api-api-openapi.yml",
+    "gadjah-mada-university-discovery-api-openapi.yml",
+    "gadjah-mada-university-infra-api-openapi.yml",
+    "gadjah-mada-university-oauth2-api-openapi.yml",
+    "gadjah-mada-university-social-login-api-openapi.yml"
+  ],
+  "archived": [
+    "deleted 1 superseded output(s) from the previous generation"
+  ],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "1 archived document(s) dropped as subsets of other archived documents",
+    "sourced from openapi/_original/ (3 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "gadjah-mada-university-journal-oai-pmh-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "gadjah-mada-university-repository-oai-pmh-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "gadjah-mada-university-ugm-id-openapi.json: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "tag 'OAI-PMH' spans 2 source specs (gadjah-mada-university-journal-oai-pmh-openapi.yml, gadjah-mada-university-repository-oai-pmh-openapi.yml): per-path servers applied",
+    "superseded outputs removed: gadjah-mada-university-o-auth2-api-openapi.yml",
+    "apis.yml register: written (+1 apis, 11 total)"
+  ],
+  "skipped": [
+    "_original/gadjah-mada-university-ugm-id-openapi.yml: archived document superseded by a larger archived document",
+    "gadjah-mada-university-api-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "gadjah-mada-university-discovery-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "gadjah-mada-university-infra-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "gadjah-mada-university-o-auth2-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "gadjah-mada-university-oai-pmh-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "gadjah-mada-university-social-login-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

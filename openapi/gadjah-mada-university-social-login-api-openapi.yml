@@ -1,0 +1,173 @@
+openapi: 3.2.0
+info:
+  description: Layanan OAuth 2.0 / OIDC Authorization Server untuk mengakses UGM API.
+  title: UGM ID Social Login API
+  version: '2.0'
+servers:
+- description: Production Server
+  url: https://oauth.simaster.ugm.ac.id
+- description: Development Server
+  url: https://oauth.dev.ugm.ac.id
+tags:
+- description: Social provider login (Google, Microsoft, Facebook, LinkedIn)
+  name: Social Login
+paths:
+  /authorize/apple:
+    get:
+      description: 'Redirect ke Apple Sign In. Apple menggunakan `response_mode=form_post`,
+
+        sehingga callback diterima sebagai POST ke `/callback/apple`.'
+      operationId: authorizeApple
+      parameters:
+      - $ref: '#/components/parameters/OAuthClientId'
+      - $ref: '#/components/parameters/OAuthRedirectUri'
+      - $ref: '#/components/parameters/OAuthScope'
+      - $ref: '#/components/parameters/OAuthState'
+      responses:
+        '302':
+          description: Redirect ke Apple Sign In
+      summary: Login dengan Apple
+      tags:
+      - Social Login
+  /authorize/facebook:
+    get:
+      operationId: authorizeFacebook
+      parameters:
+      - $ref: '#/components/parameters/OAuthClientId'
+      - $ref: '#/components/parameters/OAuthRedirectUri'
+      - $ref: '#/components/parameters/OAuthScope'
+      - $ref: '#/components/parameters/OAuthState'
+      responses:
+        '302':
+          description: Redirect ke Facebook OAuth
+      summary: Login dengan Facebook
+      tags:
+      - Social Login
+  /authorize/google:
+    get:
+      description: Redirect ke Google OAuth. State dienkripsi AES-GCM.
+      operationId: authorizeGoogle
+      parameters:
+      - $ref: '#/components/parameters/OAuthClientId'
+      - $ref: '#/components/parameters/OAuthRedirectUri'
+      - $ref: '#/components/parameters/OAuthScope'
+      - $ref: '#/components/parameters/OAuthState'
+      responses:
+        '302':
+          description: Redirect ke Google OAuth
+      summary: Login dengan Google
+      tags:
+      - Social Login
+  /authorize/linkedin:
+    get:
+      operationId: authorizeLinkedin
+      parameters:
+      - $ref: '#/components/parameters/OAuthClientId'
+      - $ref: '#/components/parameters/OAuthRedirectUri'
+      - $ref: '#/components/parameters/OAuthScope'
+      - $ref: '#/components/parameters/OAuthState'
+      responses:
+        '302':
+          description: Redirect ke LinkedIn OAuth
+      summary: Login dengan LinkedIn
+      tags:
+      - Social Login
+  /authorize/microsoft:
+    get:
+      description: Redirect ke Microsoft OAuth. Tenant dan domain email divalidasi.
+      operationId: authorizeMicrosoft
+      parameters:
+      - $ref: '#/components/parameters/OAuthClientId'
+      - $ref: '#/components/parameters/OAuthRedirectUri'
+      - $ref: '#/components/parameters/OAuthScope'
+      - $ref: '#/components/parameters/OAuthState'
+      responses:
+        '302':
+          description: Redirect ke Microsoft OAuth
+      summary: Login dengan Microsoft 365 UGM
+      tags:
+      - Social Login
+  /callback/apple:
+    post:
+      description: 'Apple mengirim data via HTTP POST (form_post mode).
+
+        Menerima `id_token`, `code`, `state`, dan `user` (hanya first-time login).'
+      operationId: callbackApple
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                code:
+                  type: string
+                id_token:
+                  description: Apple signed JWT
+                  type: string
+                state:
+                  type: string
+                user:
+                  description: JSON string (hanya first-time login)
+                  type: string
+              type: object
+        required: true
+      responses:
+        '302':
+          description: Redirect ke client redirect_uri dengan authorization code
+        '403':
+          $ref: '#/components/responses/Forbidden'
+      summary: Callback Apple Sign In
+      tags:
+      - Social Login
+components:
+  schemas:
+    ErrorResponse:
+      properties:
+        error:
+          type: string
+        error_description:
+          type: string
+        message:
+          type: string
+      type: object
+  responses:
+    Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+      description: Scope tidak mencukupi atau akses ditolak
+  parameters:
+    OAuthScope:
+      in: query
+      name: scope
+      required: false
+      schema:
+        type: string
+    OAuthState:
+      in: query
+      name: state
+      required: false
+      schema:
+        type: string
+    OAuthRedirectUri:
+      in: query
+      name: redirect_uri
+      required: true
+      schema:
+        type: string
+    OAuthClientId:
+      in: query
+      name: client_id
+      required: true
+      schema:
+        type: string
+  securitySchemes:
+    BasicAuth:
+      description: client_id:client_secret via Basic Auth header
+      scheme: basic
+      type: http
+    BearerAuth:
+      bearerFormat: JWT
+      description: Access token JWT dari /oauth/token
+      scheme: bearer
+      type: http

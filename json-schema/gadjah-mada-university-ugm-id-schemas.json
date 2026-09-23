@@ -1,0 +1,392 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/gadjah-mada-university/refs/heads/main/json-schema/gadjah-mada-university-ugm-id-schemas.json",
+  "title": "UGM ID — JSON Schemas",
+  "description": "Extracted verbatim on 2026-09-01 from components.schemas of Universitas Gadjah Mada's own OpenAPI 3.1.0 document at https://oauth.simaster.ugm.ac.id/openapi.json. OpenAPI 3.1 schema objects ARE JSON Schema 2020-12, so this is an extraction rather than a translation — no shape was invented. x-operator: institution.",
+  "x-generated": "2026-09-01",
+  "x-method": "derived",
+  "x-source": "openapi/_original/gadjah-mada-university-ugm-id-openapi.json (components.schemas), fetched from https://oauth.simaster.ugm.ac.id/openapi.json on 2026-09-01",
+  "x-operator": "institution",
+  "$defs": {
+    "ErrorResponse": {
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "error_description": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "HealthResponse": {
+      "properties": {
+        "services": {
+          "properties": {
+            "database": {
+              "properties": {
+                "status": {
+                  "enum": [
+                    "ok",
+                    "error"
+                  ],
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "redis": {
+              "properties": {
+                "status": {
+                  "enum": [
+                    "ok",
+                    "error",
+                    "disabled"
+                  ],
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            },
+            "simaster": {
+              "properties": {
+                "status": {
+                  "enum": [
+                    "ok",
+                    "error",
+                    "disabled"
+                  ],
+                  "type": "string"
+                }
+              },
+              "type": "object"
+            }
+          },
+          "type": "object"
+        },
+        "status": {
+          "enum": [
+            "ok",
+            "degraded",
+            "error"
+          ],
+          "type": "string"
+        },
+        "timestamp": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "IntrospectResponse": {
+      "properties": {
+        "active": {
+          "description": "True jika token valid dan belum expired",
+          "type": "boolean"
+        },
+        "client_id": {
+          "type": "string"
+        },
+        "data": {
+          "description": "Data user (hanya untuk user-based grants)",
+          "properties": {
+            "attributes": {
+              "items": {
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "client_id": {
+              "type": "string"
+            },
+            "email": {
+              "type": "string"
+            },
+            "unit_id": {
+              "type": "integer"
+            },
+            "username": {
+              "type": "string"
+            }
+          },
+          "type": "object"
+        },
+        "exp": {
+          "type": "integer"
+        },
+        "grant_type": {
+          "type": "string"
+        },
+        "iat": {
+          "type": "integer"
+        },
+        "iss": {
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "sub": {
+          "description": "Username (untuk user-based grants)",
+          "type": "string"
+        },
+        "token_type": {
+          "example": "Bearer",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "ServerMetadata": {
+      "description": "RFC 8414 / OIDC Discovery metadata",
+      "properties": {
+        "authorization_endpoint": {
+          "type": "string"
+        },
+        "end_session_endpoint": {
+          "type": "string"
+        },
+        "grant_types_supported": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "id_token_signing_alg_values_supported": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "introspection_endpoint": {
+          "type": "string"
+        },
+        "issuer": {
+          "type": "string"
+        },
+        "jwks_uri": {
+          "type": "string"
+        },
+        "response_types_supported": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "revocation_endpoint": {
+          "type": "string"
+        },
+        "scopes_supported": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "token_endpoint": {
+          "type": "string"
+        },
+        "token_endpoint_auth_methods_supported": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "userinfo_endpoint": {
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "TokenResponse": {
+      "description": "Respons token OAuth2",
+      "example": {
+        "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...",
+        "expires_in": 3600,
+        "refresh_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...",
+        "scope": "openid user.read",
+        "token_type": "Bearer"
+      },
+      "properties": {
+        "access_token": {
+          "description": "JWT access token",
+          "type": "string"
+        },
+        "expires_in": {
+          "description": "Masa berlaku dalam detik",
+          "example": 3600,
+          "type": "integer"
+        },
+        "id_token": {
+          "description": "OIDC ID Token (hanya jika scope openid)",
+          "type": "string"
+        },
+        "refresh_token": {
+          "description": "JWT refresh token (tidak selalu ada)",
+          "type": "string"
+        },
+        "scope": {
+          "type": "string"
+        },
+        "token_type": {
+          "example": "Bearer",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "UserData": {
+      "description": "Profil dasar user dari /api/me",
+      "properties": {
+        "email": {
+          "example": "johndoe@ugm.ac.id",
+          "type": "string"
+        },
+        "family_name": {
+          "type": "string"
+        },
+        "given_name": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "picture": {
+          "type": "string"
+        },
+        "provider": {
+          "enum": [
+            "cas_sso",
+            "google",
+            "microsoft",
+            "facebook",
+            "linkedin",
+            "apple"
+          ],
+          "type": "string"
+        },
+        "username": {
+          "example": "johndoe",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "UserDetailData": {
+      "description": "Profil lengkap user dari Simaster (/user/me, /user/username/:username)",
+      "properties": {
+        "attributes": {
+          "items": {
+            "properties": {
+              "id": {
+                "type": "integer"
+              },
+              "is_default": {
+                "type": "integer"
+              },
+              "user_identitas": {
+                "type": "string"
+              },
+              "user_identitas_id": {
+                "type": "integer"
+              },
+              "user_identitas_nomor": {
+                "type": "string"
+              },
+              "user_tipe": {
+                "type": "string"
+              },
+              "user_tipe_id": {
+                "type": "integer"
+              }
+            },
+            "type": "object"
+          },
+          "type": "array"
+        },
+        "email": {
+          "example": "johndoe@ugm.ac.id",
+          "type": "string"
+        },
+        "is_blacklist": {
+          "example": false,
+          "type": "boolean"
+        },
+        "nama_lengkap": {
+          "example": "John Doe",
+          "type": "string"
+        },
+        "total_attributes": {
+          "example": 3,
+          "type": "integer"
+        },
+        "user_id": {
+          "example": 123456,
+          "type": "integer"
+        },
+        "user_identitas": {
+          "example": "ID STAFF",
+          "type": "string"
+        },
+        "user_identitas_id": {
+          "example": 8,
+          "type": "integer"
+        },
+        "user_identitas_nomor": {
+          "example": "12345",
+          "type": "string"
+        },
+        "user_tipe": {
+          "example": "Karyawan",
+          "type": "string"
+        },
+        "user_tipe_id": {
+          "example": 2,
+          "type": "integer"
+        },
+        "username": {
+          "example": "johndoe",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    },
+    "UserInfoResponse": {
+      "description": "OIDC UserInfo claims",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "email_verified": {
+          "type": "boolean"
+        },
+        "family_name": {
+          "type": "string"
+        },
+        "given_name": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "picture": {
+          "type": "string"
+        },
+        "preferred_username": {
+          "type": "string"
+        },
+        "sub": {
+          "description": "Username",
+          "type": "string"
+        }
+      },
+      "type": "object"
+    }
+  }
+}

@@ -1,0 +1,58 @@
+---
+generated: '2026-09-01'
+method: searched
+source: >-
+  Read verbatim on 2026-09-01 from UGM's own published discovery documents at
+  https://oauth.simaster.ugm.ac.id/.well-known/openid-configuration (200) and
+  /.well-known/oauth-authorization-server (200), cross-checked against
+  https://oauth.simaster.ugm.ac.id/openapi.json. Not inferred — the institution declares these.
+x-operator: institution
+api: gadjah-mada-university:ugm-id
+
+summary:
+  count: 5
+  model: OpenID Connect standard scopes plus two UGM-specific resource scopes.
+  granularity: coarse
+  note: >-
+    Five scopes for twenty operations. The three OIDC standard scopes govern identity claims; the
+    two UGM scopes (user.read, userDetail.read) split "basic profile" from "full Simaster profile".
+    There is no write scope anywhere in the server — every declared scope is read-only, and every
+    resource operation in the OpenAPI is a GET. No per-unit, per-faculty or per-system scoping
+    exists, so a client granted userDetail.read reads the full Simaster record for whatever
+    subject it is authorized for.
+
+scopes:
+- scope: openid
+  standard: OpenID Connect Core
+  description: Requests an id_token and enables the OIDC UserInfo endpoint.
+  grants_access_to:
+  - GET /userinfo
+- scope: profile
+  standard: OpenID Connect Core
+  description: >-
+    Basic profile claims - name, given_name, family_name, picture, preferred_username, plus UGM's
+    non-standard unit_id claim.
+  claims: [name, given_name, family_name, picture, preferred_username, unit_id]
+- scope: email
+  standard: OpenID Connect Core
+  description: Email claims.
+  claims: [email, email_verified]
+- scope: user.read
+  standard: UGM-specific
+  description: Read the authenticated subject's basic user profile.
+  grants_access_to:
+  - GET /api/me
+- scope: userDetail.read
+  standard: UGM-specific
+  description: >-
+    Read the full Simaster user record, and read another user's record by username. The broadest
+    scope the server issues.
+  grants_access_to:
+  - GET /user/me
+  - GET /user/username/{username}
+
+gaps:
+- No write, update or delete scope exists on any UGM ID operation.
+- No scope documentation outside the discovery document — no prose page explains what each grants.
+- No consent-screen copy or scope description strings are published.
+- No incremental or step-up authorization is described.

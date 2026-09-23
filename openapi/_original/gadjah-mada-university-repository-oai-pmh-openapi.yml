@@ -1,0 +1,110 @@
+# x-archived-from: gadjah-mada-university-repository-oai-pmh-openapi.yml
+# x-archived-on: 2026-09-16
+# generated: '2026-09-01'
+# method: derived
+# source: >-
+#   Derived on 2026-09-01 from the OAI-PMH 2.0 protocol specification
+#   (http://www.openarchives.org/OAI/openarchivesprotocol.html) bound to the live, verified endpoint
+#   at http://repository.ugm.ac.id/cgi/oai2. Every verb below was exercised against the live host:
+#   Identify (200, repositoryName "repository civitas UGM", adminEmail library@ugm.ac.id,
+#   EPrints 3.3.15, earliestDatestamp 2014-01-06), ListMetadataFormats (200, six prefixes),
+#   ListSets (200), ListIdentifiers (200, 100 identifiers in the first page). UGM publishes no
+#   OpenAPI for this endpoint — this document is OUR derivation of a standardised protocol, not
+#   something the institution wrote, and it must not be credited to them as an authored contract.
+# x-operator: institution
+openapi: 3.1.0
+info:
+  title: UGM Institutional Repository OAI-PMH
+  version: '2.0'
+  description: >-
+    OAI-PMH 2.0 metadata harvesting interface for "repository civitas UGM", the institutional
+    repository of Universitas Gadjah Mada, running on EPrints 3.3.15 on the university's own host.
+    The software is EPrints (University of Southampton); the deployment, the host, the content and
+    the administration (library@ugm.ac.id) are UGM's. Six metadata prefixes are offered: oai_dc,
+    didl, mets, oai_bibl, rdf and uketd_dc. Anonymous and unauthenticated.
+    NOTE - this description was written by API Evangelist from live protocol responses. It is a
+    derived contract; the institution publishes no OpenAPI of its own for this surface.
+  contact:
+    name: UGM Library
+    email: library@ugm.ac.id
+    url: http://repository.ugm.ac.id/
+servers:
+  - url: http://repository.ugm.ac.id/cgi
+    description: >-
+      Production. HTTP only — https://repository.ugm.ac.id returns 403 from an edge filter while
+      http:// returns 200, verified 2026-09-01.
+paths:
+  /oai2:
+    get:
+      operationId: oaiRequest
+      summary: OAI-PMH 2.0 request
+      description: >-
+        Single-endpoint OAI-PMH interface. The `verb` parameter selects the operation. Responses are
+        XML in the http://www.openarchives.org/OAI/2.0/ namespace. Protocol-level failures are
+        reported in an <error> element with a machine-readable `code`, at HTTP 200.
+      tags: [OAI-PMH]
+      parameters:
+        - name: verb
+          in: query
+          required: true
+          description: The OAI-PMH verb to execute.
+          schema:
+            type: string
+            enum: [Identify, ListMetadataFormats, ListSets, ListIdentifiers, ListRecords, GetRecord]
+        - name: metadataPrefix
+          in: query
+          required: false
+          description: Metadata format. Required for ListIdentifiers, ListRecords and GetRecord.
+          schema:
+            type: string
+            enum: [oai_dc, didl, mets, oai_bibl, rdf, uketd_dc]
+        - name: identifier
+          in: query
+          required: false
+          description: OAI identifier of a single record, e.g. oai:generic.eprints.org:32281.
+          schema: { type: string }
+        - name: set
+          in: query
+          required: false
+          description: setSpec restricting the harvest to one set.
+          schema: { type: string }
+        - name: from
+          in: query
+          required: false
+          description: Lower bound on the datestamp, granularity YYYY-MM-DDThh:mm:ssZ.
+          schema: { type: string, format: date-time }
+        - name: until
+          in: query
+          required: false
+          description: Upper bound on the datestamp, granularity YYYY-MM-DDThh:mm:ssZ.
+          schema: { type: string, format: date-time }
+        - name: resumptionToken
+          in: query
+          required: false
+          description: Continuation token returned by a previous incomplete list response.
+          schema: { type: string }
+      responses:
+        '200':
+          description: >-
+            An OAI-PMH response document. Carries either the requested payload or an <error>
+            element — OAI-PMH signals protocol errors inside a 200 body, not with an HTTP status.
+          content:
+            text/xml:
+              schema:
+                type: string
+                contentMediaType: text/xml
+tags:
+  - name: OAI-PMH
+    description: Open Archives Initiative Protocol for Metadata Harvesting, version 2.0.
+x-oai-pmh:
+  repository_name: repository civitas UGM
+  admin_email: library@ugm.ac.id
+  protocol_version: '2.0'
+  earliest_datestamp: '2014-01-06T06:46:00Z'
+  deleted_record: persistent
+  granularity: YYYY-MM-DDThh:mm:ssZ
+  repository_identifier: generic.eprints.org
+  sample_identifier: oai:generic.eprints.org:32281
+  software: EPrints 3.3.15
+  metadata_prefixes: [didl, mets, oai_bibl, oai_dc, rdf, uketd_dc]
+  verified: '2026-09-01'

@@ -1,0 +1,414 @@
+openapi: 3.2.0
+info:
+  description: Layanan OAuth 2.0 / OIDC Authorization Server untuk mengakses UGM API.
+  title: UGM ID O Auth2 API
+  version: '2.0'
+servers:
+- description: Production Server
+  url: https://oauth.simaster.ugm.ac.id
+- description: Development Server
+  url: https://oauth.dev.ugm.ac.id
+tags:
+- description: Endpoint inti OAuth2/OIDC
+  name: OAuth2
+paths:
+  /oauth/authorize:
+    get:
+      description: 'Memulai Authorization Code flow. Redirect ke CAS SSO UGM, kemudian tampilkan
+
+        consent screen. PKCE (`code_challenge`) **wajib** disertakan.'
+      operationId: authorizeUser
+      parameters:
+      - in: query
+        name: response_type
+        required: true
+        schema:
+          enum:
+          - code
+          type: string
+      - in: query
+        name: client_id
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: redirect_uri
+        required: true
+        schema:
+          type: string
+      - in: query
+        name: scope
+        required: false
+        schema:
+          example: openid user.read userDetail.read
+          type: string
+      - in: query
+        name: state
+        required: false
+        schema:
+          type: string
+      - description: PKCE code challenge (disarankan S256)
+        in: query
+        name: code_challenge
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: code_challenge_method
+        required: false
+        schema:
+          enum:
+          - S256
+          - plain
+          type: string
+      responses:
+        '200':
+          description: Halaman consent ditampilkan
+        '302':
+          description: Redirect ke CAS SSO atau redirect_uri dengan code
+        '400':
+          $ref: '#/components/responses/BadRequest'
+      summary: Otorisasi Pengguna (Authorization Code + PKCE)
+      tags:
+      - OAuth2
+  /oauth/introspect:
+    post:
+      description: 'Cek validitas dan metadata token. Hanya client yang memiliki token tersebut
+
+        yang bisa mengintrospeksi (token.client_id harus sama dengan client yang request).'
+      operationId: introspectToken
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                token:
+                  type: string
+                token_type_hint:
+                  enum:
+                  - access_token
+                  - refresh_token
+                  type: string
+              required:
+              - token
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/IntrospectResponse'
+          description: Hasil introspeksi
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+      - BasicAuth: []
+      summary: Introspeksi Token (RFC 7662)
+      tags:
+      - OAuth2
+  /oauth/logout:
+    get:
+      description: Logout dari sesi OIDC. Opsional redirect ke `post_logout_redirect_uri`.
+      operationId: logoutUser
+      parameters:
+      - in: query
+        name: id_token_hint
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: post_logout_redirect_uri
+        required: false
+        schema:
+          type: string
+      - in: query
+        name: state
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: Halaman logout berhasil ditampilkan
+        '302':
+          description: Redirect ke post_logout_redirect_uri
+      summary: RP-Initiated Logout (OIDC)
+      tags:
+      - OAuth2
+  /oauth/revoke:
+    post:
+      description: Mencabut access token atau refresh token. Harus menggunakan Basic Auth.
+      operationId: revokeToken
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                token:
+                  type: string
+                token_type_hint:
+                  enum:
+                  - access_token
+                  - refresh_token
+                  type: string
+              required:
+              - token
+              type: object
+        required: true
+      responses:
+        '200':
+          description: Token berhasil dicabut (atau tidak ditemukan — keduanya mengembalikan 200)
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+      - BasicAuth: []
+      summary: Cabut Token OAuth2 (RFC 7009)
+      tags:
+      - OAuth2
+  /oauth/token:
+    post:
+      description: 'Mendukung semua grant types. Autentikasi client via Basic Auth atau form body.
+
+
+        **grant_type yang didukung:**
+
+        - `authorization_code` — tukar code dengan token (wajib `code_verifier` jika pakai PKCE)
+
+        - `password` — LDAP credentials langsung
+
+        - `client_credentials` — service-to-service
+
+        - `refresh_token` — perbarui access token
+
+        - `urn:ietf:params:oauth:grant-type:google_id_token` — tukar Google ID Token
+
+        - `urn:ietf:params:oauth:grant-type:token-exchange` — RFC 8693 token exchange'
+      operationId: getToken
+      requestBody:
+        content:
+          application/x-www-form-urlencoded:
+            schema:
+              properties:
+                apple_user_payload:
+                  description: JSON string user data Apple (hanya first-time login via Apple)
+                  type: string
+                client_id:
+                  type: string
+                client_secret:
+                  type: string
+                code:
+                  description: Authorization code (grant authorization_code)
+                  type: string
+                code_verifier:
+                  description: PKCE verifier (wajib jika menggunakan code_challenge)
+                  type: string
+                grant_type:
+                  enum:
+                  - authorization_code
+                  - password
+                  - client_credentials
+                  - refresh_token
+                  - urn:ietf:params:oauth:grant-type:google_id_token
+                  - urn:ietf:params:oauth:grant-type:token-exchange
+                  type: string
+                id_token:
+                  description: Google ID Token (grant google_id_token)
+                  type: string
+                password:
+                  description: Hanya untuk grant password
+                  type: string
+                redirect_uri:
+                  type: string
+                refresh_token:
+                  description: Hanya untuk grant refresh_token
+                  type: string
+                scope:
+                  type: string
+                subject_issuer:
+                  description: Issuer dari subject_token (e.g. https://appleid.apple.com)
+                  example: https://appleid.apple.com
+                  type: string
+                subject_token:
+                  description: Token untuk ditukar (grant token-exchange)
+                  type: string
+                subject_token_type:
+                  description: Tipe subject_token
+                  example: urn:ietf:params:oauth:token-type:id_token
+                  type: string
+                username:
+                  description: Hanya untuk grant password
+                  type: string
+              required:
+              - grant_type
+              type: object
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TokenResponse'
+          description: Token berhasil diterbitkan
+        '400':
+          $ref: '#/components/responses/OAuth2Error'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+      - BasicAuth: []
+      - {}
+      summary: Terbitkan Token OAuth2
+      tags:
+      - OAuth2
+  /userinfo:
+    get:
+      description: Mengambil klaim user. Memerlukan scope `openid`.
+      operationId: getUserInfo
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserInfoResponse'
+          description: Data user berhasil
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+      security:
+      - BearerAuth: []
+      summary: OIDC UserInfo Endpoint
+      tags:
+      - OAuth2
+components:
+  schemas:
+    ErrorResponse:
+      properties:
+        error:
+          type: string
+        error_description:
+          type: string
+        message:
+          type: string
+      type: object
+    UserInfoResponse:
+      description: OIDC UserInfo claims
+      properties:
+        email:
+          type: string
+        email_verified:
+          type: boolean
+        family_name:
+          type: string
+        given_name:
+          type: string
+        name:
+          type: string
+        picture:
+          type: string
+        preferred_username:
+          type: string
+        sub:
+          description: Username
+          type: string
+      type: object
+    IntrospectResponse:
+      properties:
+        active:
+          description: True jika token valid dan belum expired
+          type: boolean
+        client_id:
+          type: string
+        data:
+          description: Data user (hanya untuk user-based grants)
+          properties:
+            attributes:
+              items:
+                type: object
+              type: array
+            client_id:
+              type: string
+            email:
+              type: string
+            unit_id:
+              type: integer
+            username:
+              type: string
+          type: object
+        exp:
+          type: integer
+        grant_type:
+          type: string
+        iat:
+          type: integer
+        iss:
+          type: string
+        scope:
+          type: string
+        sub:
+          description: Username (untuk user-based grants)
+          type: string
+        token_type:
+          example: Bearer
+          type: string
+      type: object
+    TokenResponse:
+      description: Respons token OAuth2
+      example:
+        access_token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...
+        expires_in: 3600
+        refresh_token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...
+        scope: openid user.read
+        token_type: Bearer
+      properties:
+        access_token:
+          description: JWT access token
+          type: string
+        expires_in:
+          description: Masa berlaku dalam detik
+          example: 3600
+          type: integer
+        id_token:
+          description: OIDC ID Token (hanya jika scope openid)
+          type: string
+        refresh_token:
+          description: JWT refresh token (tidak selalu ada)
+          type: string
+        scope:
+          type: string
+        token_type:
+          example: Bearer
+          type: string
+      type: object
+  responses:
+    OAuth2Error:
+      content:
+        application/json:
+          schema:
+            properties:
+              error:
+                example: invalid_grant
+                type: string
+              error_description:
+                type: string
+            type: object
+      description: OAuth2 error response
+    BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+      description: Permintaan tidak valid
+    Unauthorized:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+      description: Token tidak valid atau tidak disertakan
+  securitySchemes:
+    BasicAuth:
+      description: client_id:client_secret via Basic Auth header
+      scheme: basic
+      type: http
+    BearerAuth:
+      bearerFormat: JWT
+      description: Access token JWT dari /oauth/token
+      scheme: bearer
+      type: http

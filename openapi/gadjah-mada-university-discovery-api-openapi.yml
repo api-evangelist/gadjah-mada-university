@@ -1,0 +1,127 @@
+openapi: 3.2.0
+info:
+  description: Layanan OAuth 2.0 / OIDC Authorization Server untuk mengakses UGM API.
+  title: UGM ID Discovery API
+  version: '2.0'
+servers:
+- description: Production Server
+  url: https://oauth.simaster.ugm.ac.id
+- description: Development Server
+  url: https://oauth.dev.ugm.ac.id
+tags:
+- description: RFC 8414 & OIDC Discovery
+  name: Discovery
+paths:
+  /.well-known/jwks.json:
+    get:
+      description: Public keys untuk verifikasi JWT RS256. Di-cache 5 menit.
+      operationId: getJwks
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  keys:
+                    items:
+                      properties:
+                        alg:
+                          example: RS256
+                          type: string
+                        e:
+                          type: string
+                        kid:
+                          type: string
+                        kty:
+                          example: RSA
+                          type: string
+                        n:
+                          type: string
+                        use:
+                          example: sig
+                          type: string
+                      type: object
+                    type: array
+                type: object
+          description: JWKS berhasil
+      summary: JSON Web Key Set (JWKS)
+      tags:
+      - Discovery
+  /.well-known/oauth-authorization-server:
+    get:
+      operationId: getOAuthMetadata
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerMetadata'
+          description: Metadata server otorisasi OAuth 2.0
+      summary: OAuth 2.0 Authorization Server Metadata (RFC 8414)
+      tags:
+      - Discovery
+  /.well-known/openid-configuration:
+    get:
+      operationId: getOidcConfiguration
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerMetadata'
+          description: Konfigurasi OIDC
+      summary: OpenID Connect Discovery
+      tags:
+      - Discovery
+components:
+  schemas:
+    ServerMetadata:
+      description: RFC 8414 / OIDC Discovery metadata
+      properties:
+        authorization_endpoint:
+          type: string
+        end_session_endpoint:
+          type: string
+        grant_types_supported:
+          items:
+            type: string
+          type: array
+        id_token_signing_alg_values_supported:
+          items:
+            type: string
+          type: array
+        introspection_endpoint:
+          type: string
+        issuer:
+          type: string
+        jwks_uri:
+          type: string
+        response_types_supported:
+          items:
+            type: string
+          type: array
+        revocation_endpoint:
+          type: string
+        scopes_supported:
+          items:
+            type: string
+          type: array
+        token_endpoint:
+          type: string
+        token_endpoint_auth_methods_supported:
+          items:
+            type: string
+          type: array
+        userinfo_endpoint:
+          type: string
+      type: object
+  securitySchemes:
+    BasicAuth:
+      description: client_id:client_secret via Basic Auth header
+      scheme: basic
+      type: http
+    BearerAuth:
+      bearerFormat: JWT
+      description: Access token JWT dari /oauth/token
+      scheme: bearer
+      type: http

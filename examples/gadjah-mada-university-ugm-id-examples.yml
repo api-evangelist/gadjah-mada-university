@@ -1,0 +1,199 @@
+---
+generated: '2026-09-01'
+method: probed
+source: >-
+  Real request/response pairs captured live on 2026-09-01 against UGM's own hosts. Every body below
+  is a verbatim copy of what the endpoint returned. Nothing is synthesised; where an endpoint could
+  not be exercised without credentials that is stated rather than filled in with an invented body.
+x-operator: institution
+
+examples:
+
+- name: health-check
+  api: gadjah-mada-university:ugm-id
+  operationId: healthCheck
+  request:
+    method: GET
+    url: https://oauth.simaster.ugm.ac.id/health
+    auth: none
+  response:
+    status: 200
+    content_type: application/json
+    body: |
+      {"services":{"database":"up","redis":"up","simaster":"up"},"status":"ok","timestamp":1788294994,"version":"unknown"}
+  note: >-
+    Publicly reachable with no credentials. Reports downstream dependency health for the database,
+    Redis and Simaster. `version` is the string "unknown", so the surface exposes liveness but not
+    a build identifier.
+
+- name: oidc-discovery
+  api: gadjah-mada-university:ugm-id
+  operationId: getOidcConfiguration
+  request:
+    method: GET
+    url: https://oauth.simaster.ugm.ac.id/.well-known/openid-configuration
+    auth: none
+  response:
+    status: 200
+    content_type: application/json
+    bytes: 1594
+    body_excerpt: |
+      {
+        "issuer": "oauth.simaster.ugm.ac.id",
+        "authorization_endpoint": "oauth.simaster.ugm.ac.id/oauth/authorize",
+        "token_endpoint": "oauth.simaster.ugm.ac.id/oauth/token",
+        "userinfo_endpoint": "oauth.simaster.ugm.ac.id/userinfo",
+        "jwks_uri": "oauth.simaster.ugm.ac.id/.well-known/jwks.json",
+        "scopes_supported": ["openid","profile","email","user.read","userDetail.read"],
+        "code_challenge_methods_supported": ["S256"],
+        "id_token_signing_alg_values_supported": ["RS256"]
+      }
+  note: >-
+    Verbatim. The scheme-less URLs are UGM's, not a transcription error - see the defect recorded in
+    authentication/gadjah-mada-university-authentication.yml.
+
+- name: jwks-empty
+  api: gadjah-mada-university:ugm-id
+  operationId: getJwks
+  request:
+    method: GET
+    url: https://oauth.simaster.ugm.ac.id/.well-known/jwks.json
+    auth: none
+  response:
+    status: 200
+    content_type: application/json
+    body: |
+      {"keys":[]}
+  note: >-
+    200 with no keys. RS256 is advertised for id_token signing but no verification key is published.
+
+- name: token-invalid-client
+  api: gadjah-mada-university:ugm-id
+  operationId: getToken
+  request:
+    method: POST
+    url: https://oauth.simaster.ugm.ac.id/oauth/token
+    content_type: application/x-www-form-urlencoded
+    body: grant_type=client_credentials
+    auth: none
+  response:
+    status: 401
+    content_type: application/json
+    body: |
+      {"error": "invalid_client", "error_description": "The client cannot authenticate with methods: ['client_secret_basic', 'client_secret_post']"}
+  note: >-
+    A correct RFC 6749 section 5.2 error object. Note the error_description leaks a Python list
+    repr rather than a formatted string.
+
+- name: protected-resource-unauthenticated
+  api: gadjah-mada-university:ugm-id
+  operationId: getMe
+  request:
+    method: GET
+    url: https://oauth.simaster.ugm.ac.id/api/me
+    auth: none
+  response:
+    status: 401
+    content_type: text/html; charset=utf-8
+    bytes: 4559
+    body_excerpt: '<!DOCTYPE html><html lang="id"><head><title>401 · Unauthorized · UGM ID</title>'
+  note: >-
+    Correct status code, wrong media type for an API - the resource endpoints return a branded HTML
+    page to an unauthenticated caller instead of a JSON error object. Identical behaviour on
+    /user/me, /userinfo and /user/username/{username}.
+
+- name: authenticated-resource-not-exercised
+  api: gadjah-mada-university:ugm-id
+  operationIds: [getMe, getUserMe, getUserByUsername, getUserInfo, introspectToken]
+  status: not-exercised
+  note: >-
+    These operations require a client_id issued by DTI. There is no public client registration and
+    no dynamic client registration endpoint, so no authenticated example could be captured. No
+    example body is invented here - the schemas in
+    json-schema/gadjah-mada-university-ugm-id-schemas.json are UGM's own declarations of the shape.
+
+- name: repository-oai-identify
+  api: gadjah-mada-university:repository-oai-pmh
+  request:
+    method: GET
+    url: http://repository.ugm.ac.id/cgi/oai2?verb=Identify
+    auth: none
+  response:
+    status: 200
+    content_type: text/xml
+    body_excerpt: |
+      <Identify>
+        <repositoryName>repository civitas UGM</repositoryName>
+        <protocolVersion>2.0</protocolVersion>
+        <adminEmail>library@ugm.ac.id</adminEmail>
+        <earliestDatestamp>2014-01-06T06:46:00Z</earliestDatestamp>
+        <deletedRecord>persistent</deletedRecord>
+        <granularity>YYYY-MM-DDThh:mm:ssZ</granularity>
+        ...
+        <comment>This system is running eprints server software (EPrints 3.3.15)</comment>
+      </Identify>
+  note: >-
+    The eprints description block also reveals that metadataPolicy, dataPolicy and submissionPolicy
+    are all left at the EPrints default text ("No metadata policy defined. This server has not yet
+    been fully configured."), which is a real governance gap on an otherwise working endpoint.
+
+- name: repository-oai-list-identifiers
+  api: gadjah-mada-university:repository-oai-pmh
+  request:
+    method: GET
+    url: http://repository.ugm.ac.id/cgi/oai2?verb=ListIdentifiers&metadataPrefix=oai_dc
+    auth: none
+  response:
+    status: 200
+    content_type: text/xml
+    records_in_first_page: 100
+  note: Real harvest data, not an empty set.
+
+- name: journal-oai-identify
+  api: gadjah-mada-university:journal-oai-pmh
+  request:
+    method: GET
+    url: https://journal.ugm.ac.id/index/oai?verb=Identify
+    auth: none
+  response:
+    status: 200
+    content_type: text/xml
+    bytes: 1930
+    body_excerpt: |
+      <Identify>
+        <repositoryName>Jurnal Universitas Gadjah Mada</repositoryName>
+        <baseURL>https://journal.ugm.ac.id/index/oai</baseURL>
+        <protocolVersion>2.0</protocolVersion>
+        <adminEmail>bpp.jurnal@ugm.ac.id</adminEmail>
+        <compression>gzip</compression>
+        <compression>deflate</compression>
+      </Identify>
+
+- name: journal-oai-list-records
+  api: gadjah-mada-university:journal-oai-pmh
+  request:
+    method: GET
+    url: https://journal.ugm.ac.id/index/oai?verb=ListRecords&metadataPrefix=oai_dc
+    auth: none
+  response:
+    status: 200
+    content_type: text/xml
+    records_in_first_page: 100
+
+- name: saml-idp-metadata
+  api: gadjah-mada-university:shibboleth-idp
+  request:
+    method: GET
+    url: https://sso.ugm.ac.id/idp/profile/Metadata/SAML
+    auth: none
+  response:
+    status: 200
+    content_type: application/xml
+    bytes: 6379
+    body_excerpt: |
+      <EntityDescriptor entityID="https://sso.ugm.ac.id/idp/shibboleth"
+        xmlns="urn:oasis:names:tc:SAML:2.0:metadata">
+        <IDPSSODescriptor protocolSupportEnumeration="urn:mace:shibboleth:1.0
+          urn:oasis:names:tc:SAML:1.1:protocol urn:oasis:names:tc:SAML:2.0:protocol">
+          <Extensions><shibmd:Scope regexp="false">ac.id</shibmd:Scope></Extensions>
+  local_copy: authentication/gadjah-mada-university-saml-idp-metadata.xml

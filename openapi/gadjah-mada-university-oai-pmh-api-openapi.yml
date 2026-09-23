@@ -1,0 +1,184 @@
+openapi: 3.2.0
+info:
+  title: Gadjah Mada University OAI PMH API
+  version: '2.0'
+  description: 'Operations tagged OAI-PMH across 2 of this provider''s published API definitions: gadjah-mada-university-journal-oai-pmh-openapi.yml, gadjah-mada-university-repository-oai-pmh-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://journal.ugm.ac.id
+  description: Production. Verified 2026-09-01.
+- url: http://repository.ugm.ac.id/cgi
+  description: Production. HTTP only — https://repository.ugm.ac.id returns 403 from an edge filter while http:// returns 200, verified 2026-09-01.
+tags:
+- name: oai pmh
+  description: Open Archives Initiative Protocol for Metadata Harvesting, version 2.0.
+paths:
+  /index/oai:
+    get:
+      operationId: oaiRequestAllJournals
+      summary: OAI-PMH 2.0 request across every UGM journal
+      description: Site-wide OAI-PMH interface. `verb` selects the operation; each journal and section is exposed as an OAI set. Also reachable as /index.php/index/oai. gzip and deflate response compression are advertised in Identify.
+      tags:
+      - oai pmh
+      parameters:
+      - name: verb
+        in: query
+        required: true
+        schema:
+          type: string
+          enum:
+          - Identify
+          - ListMetadataFormats
+          - ListSets
+          - ListIdentifiers
+          - ListRecords
+          - GetRecord
+      - name: metadataPrefix
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - oai_dc
+          - marcxml
+          - oai_marc
+          - nlm
+          - rfc1807
+      - name: identifier
+        in: query
+        required: false
+        description: OAI identifier of a single record, e.g. oai:journal.ugm.ac.id:article/1.
+        schema:
+          type: string
+      - name: set
+        in: query
+        required: false
+        description: setSpec naming one journal or one journal section.
+        schema:
+          type: string
+      - name: from
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: until
+        in: query
+        required: false
+        schema:
+          type: string
+          format: date-time
+      - name: resumptionToken
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An OAI-PMH response document, or an <error> element with a machine-readable code at HTTP 200 per the protocol.
+          content:
+            text/xml:
+              schema:
+                type: string
+                contentMediaType: text/xml
+    servers:
+    - url: https://journal.ugm.ac.id
+      description: Production. Verified 2026-09-01.
+  /oai2:
+    get:
+      operationId: oaiRequest
+      summary: OAI-PMH 2.0 request
+      description: Single-endpoint OAI-PMH interface. The `verb` parameter selects the operation. Responses are XML in the http://www.openarchives.org/OAI/2.0/ namespace. Protocol-level failures are reported in an element with a machine-readable `code`, at HTTP 200.
+      tags:
+      - oai pmh
+      parameters:
+      - name: verb
+        in: query
+        required: true
+        description: The OAI-PMH verb to execute.
+        schema:
+          type: string
+          enum:
+          - Identify
+          - ListMetadataFormats
+          - ListSets
+          - ListIdentifiers
+          - ListRecords
+          - GetRecord
+      - name: metadataPrefix
+        in: query
+        required: false
+        description: Metadata format. Required for ListIdentifiers, ListRecords and GetRecord.
+        schema:
+          type: string
+          enum:
+          - oai_dc
+          - didl
+          - mets
+          - oai_bibl
+          - rdf
+          - uketd_dc
+      - name: identifier
+        in: query
+        required: false
+        description: OAI identifier of a single record, e.g. oai:generic.eprints.org:32281.
+        schema:
+          type: string
+      - name: set
+        in: query
+        required: false
+        description: setSpec restricting the harvest to one set.
+        schema:
+          type: string
+      - name: from
+        in: query
+        required: false
+        description: Lower bound on the datestamp, granularity YYYY-MM-DDThh:mm:ssZ.
+        schema:
+          type: string
+          format: date-time
+      - name: until
+        in: query
+        required: false
+        description: Upper bound on the datestamp, granularity YYYY-MM-DDThh:mm:ssZ.
+        schema:
+          type: string
+          format: date-time
+      - name: resumptionToken
+        in: query
+        required: false
+        description: Continuation token returned by a previous incomplete list response.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An OAI-PMH response document. Carries either the requested payload or an <error> element — OAI-PMH signals protocol errors inside a 200 body, not with an HTTP status.
+          content:
+            text/xml:
+              schema:
+                type: string
+                contentMediaType: text/xml
+    servers:
+    - url: http://repository.ugm.ac.id/cgi
+      description: Production. HTTP only — https://repository.ugm.ac.id returns 403 from an edge filter while http:// returns 200, verified 2026-09-01.
+x-refined-from:
+- gadjah-mada-university-journal-oai-pmh-openapi.yml
+- gadjah-mada-university-repository-oai-pmh-openapi.yml
+x-oai-pmh:
+  repository_name: Jurnal Universitas Gadjah Mada
+  admin_email: bpp.jurnal@ugm.ac.id
+  protocol_version: '2.0'
+  deleted_record: persistent
+  granularity: YYYY-MM-DDThh:mm:ssZ
+  repository_identifier: journal.ugm.ac.id
+  sample_identifier: oai:journal.ugm.ac.id:article/1
+  software: Open Journal Systems 2.4.8.1
+  compression:
+  - gzip
+  - deflate
+  metadata_prefixes:
+  - oai_dc
+  - marcxml
+  - oai_marc
+  - nlm
+  - rfc1807
+  verified: '2026-09-01'

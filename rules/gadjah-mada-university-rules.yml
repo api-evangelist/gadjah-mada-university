@@ -1,0 +1,170 @@
+---
+generated: '2026-09-01'
+method: derived
+source: >-
+  A Spectral ruleset derived on 2026-09-01 from the defects actually observed in Universitas Gadjah
+  Mada's own OpenAPI 3.1.0 document (openapi/_original/gadjah-mada-university-ugm-id-openapi.json,
+  fetched from https://oauth.simaster.ugm.ac.id/openapi.json) and from live probes of the running
+  service. Every rule below exists because a real finding on this contract triggered it - this is
+  not a generic style guide dropped in. Built from Spectral's built-in functions only.
+x-operator: institution
+applies_to:
+- openapi/gadjah-mada-university-ugm-id-openapi.yml
+- openapi/_original/gadjah-mada-university-ugm-id-openapi.json
+
+extends:
+- spectral:oas
+
+rules:
+
+  ugm-info-contact-required:
+    description: >-
+      UGM ID declares no info.contact. There is no route for a consumer of this API to reach the
+      team that runs it - the only addresses anywhere on the estate belong to the library and to
+      journal administration.
+    message: 'info.contact is missing - API consumers have no route to the operator'
+    given: $.info
+    severity: error
+    then:
+      field: contact
+      function: truthy
+
+  ugm-info-license-required:
+    description: >-
+      No licence is attached to the specification, and no terms of service govern use of the API.
+    message: 'info.license is missing'
+    given: $.info
+    severity: warn
+    then:
+      field: license
+      function: truthy
+
+  ugm-info-terms-of-service-required:
+    description: No info.termsOfService on a contract that fronts institutional identity data.
+    message: 'info.termsOfService is missing'
+    given: $.info
+    severity: warn
+    then:
+      field: termsOfService
+      function: truthy
+
+  ugm-operation-responses-must-have-examples:
+    description: >-
+      No operation in UGM ID carries a response example. The schemas are well formed, but a
+      consumer cannot see a single real payload without first obtaining credentials that are not
+      self-service.
+    message: 'Operation response has no example or examples'
+    given: $.paths[*][get,post,put,patch,delete].responses[*].content[*]
+    severity: warn
+    then:
+      function: schema
+      functionOptions:
+        schema:
+          type: object
+          anyOf:
+          - required: [example]
+          - required: [examples]
+
+  ugm-error-responses-must-be-json:
+    description: >-
+      Live probes show /api/me, /user/me, /userinfo and /user/username/{username} returning a
+      4559-byte branded HTML page on 401 rather than the ErrorResponse schema the contract declares.
+      Every declared error response must be application/json so the declaration matches behaviour.
+    message: 'Error response must declare an application/json content type'
+    given: $.paths[*][get,post,put,patch,delete].responses[?(@property >= '400')].content
+    severity: error
+    then:
+      field: application/json
+      function: truthy
+
+  ugm-security-scheme-none-must-not-be-advertised:
+    description: >-
+      The authorization server advertises `none` as a client authentication method and the
+      specification's own description marks it as legacy, to be removed. Until it is removed, any
+      client can present itself unauthenticated at the token endpoint.
+    message: 'Client auth method "none" is advertised - the spec itself flags it for removal'
+    given: $.info.description
+    severity: warn
+    then:
+      function: pattern
+      functionOptions:
+        notMatch: 'legacy client'
+
+  ugm-server-urls-must-be-absolute:
+    description: >-
+      Both discovery documents this API publishes emit scheme-less URLs
+      ("oauth.simaster.ugm.ac.id/oauth/token"). OIDC Discovery and RFC 8414 both require absolute
+      URLs. servers[] in the OpenAPI is correct; the discovery documents are not, and this rule
+      guards the property that must not regress.
+    message: 'Server URL must be an absolute https:// URL'
+    given: $.servers[*].url
+    severity: error
+    then:
+      function: pattern
+      functionOptions:
+        match: '^https://'
+
+  ugm-operations-must-declare-security:
+    description: >-
+      Resource operations must declare their security requirement so an agent knows a token is
+      needed before it calls and gets an HTML 401.
+    message: 'Operation under the API tag declares no security requirement'
+    given: $.paths[*][get,post,put,patch,delete][?(@.tags && @.tags.indexOf('API') !== -1)]
+    severity: error
+    then:
+      field: security
+      function: truthy
+
+  ugm-operation-must-have-operation-id:
+    description: >-
+      UGM ID already passes this on all twenty operations. The rule is kept to hold the property.
+    message: 'Operation is missing operationId'
+    given: $.paths[*][get,post,put,patch,delete]
+    severity: error
+    then:
+      field: operationId
+      function: truthy
+
+  ugm-operation-must-have-summary:
+    description: UGM ID passes this on all twenty operations; the rule holds the property.
+    message: 'Operation is missing a summary'
+    given: $.paths[*][get,post,put,patch,delete]
+    severity: warn
+    then:
+      field: summary
+      function: truthy
+
+  ugm-no-write-without-scope:
+    description: >-
+      Every operation on this server is read-only today. If a write operation is ever added it must
+      carry its own scope - the five scopes currently issued (openid, profile, email, user.read,
+      userDetail.read) are all read scopes and none of them should be widened to cover a mutation.
+    message: 'A non-GET resource operation must declare its own security scope'
+    given: $.paths[*][put,patch,delete]
+    severity: error
+    then:
+      field: security
+      function: truthy
+
+findings_this_ruleset_encodes:
+- finding: info.contact, info.license and info.termsOfService are all absent.
+  severity: error
+- finding: >-
+    Declared ErrorResponse schema is not what the resource endpoints actually return on 401 - they
+    return HTML.
+  severity: error
+  evidence: errors/gadjah-mada-university-errors.yml
+- finding: Zero response examples across twenty operations.
+  severity: warn
+- finding: >-
+    Client auth method `none` and the `password` grant are both advertised; the spec flags `none`
+    as legacy with no removal date.
+  severity: warn
+  evidence: authentication/gadjah-mada-university-authentication.yml
+- finding: >-
+    Discovery documents emit scheme-less URLs, breaking OIDC Discovery and RFC 8414 conformance.
+  severity: error
+  evidence: authentication/gadjah-mada-university-authentication.yml
+- finding: JWKS endpoint returns an empty key set while advertising RS256 id_tokens.
+  severity: error
+  evidence: examples/gadjah-mada-university-ugm-id-examples.yml

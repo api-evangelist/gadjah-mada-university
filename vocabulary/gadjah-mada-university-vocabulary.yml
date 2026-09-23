@@ -1,0 +1,166 @@
+---
+generated: '2026-09-01'
+method: derived
+source: >-
+  Derived on 2026-09-01 from terms that appear in Universitas Gadjah Mada's OWN machine-readable
+  surfaces - the OpenAPI 3.1.0 at https://oauth.simaster.ugm.ac.id/openapi.json, the OIDC and RFC
+  8414 discovery documents, the SAML EntityDescriptor at sso.ugm.ac.id, and the OAI-PMH Identify
+  responses from repository.ugm.ac.id and journal.ugm.ac.id. Terms are recorded where UGM uses
+  them, in the language UGM uses. Nothing is invented; where a term is UGM-local rather than
+  standard that is stated.
+x-operator: institution
+language_note: >-
+  UGM's API descriptions are written in Indonesian. Both Indonesian and English forms are recorded
+  so a reader coming from the English catalog can resolve a term back to what the contract says.
+
+terms:
+
+- term: UGM ID
+  type: system
+  definition: >-
+    Universitas Gadjah Mada's OAuth 2.0 / OpenID Connect authorization server, the institution's
+    single identity API. info.title of the OpenAPI document.
+  source: https://oauth.simaster.ugm.ac.id/openapi.json
+  scope: institution-local
+
+- term: Simaster
+  indonesian: SIMASTER (Sistem Informasi Akademik Terpadu)
+  type: system
+  definition: >-
+    UGM's integrated academic information system - the system of record behind the identity API.
+    Named as a dependency in the /health response ("simaster":"up"), as the source of the full user
+    profile in GET /user/me ("Profil Lengkap (Simaster)"), and it is the host the authorization
+    server runs under (oauth.simaster.ugm.ac.id).
+  source: https://oauth.simaster.ugm.ac.id/openapi.json
+  scope: institution-local
+
+- term: unit_id
+  type: claim
+  definition: >-
+    A non-standard OIDC claim UGM adds to the `profile` scope, carrying the organisational unit
+    (faculty, department or directorate) a person belongs to. Not part of OpenID Connect Core -
+    this is UGM's own extension and the only institution-specific claim on the server.
+  source: https://oauth.simaster.ugm.ac.id/.well-known/openid-configuration
+  scope: institution-local
+
+- term: user.read
+  type: scope
+  definition: Read the authenticated subject's basic user profile. UGM-defined, not an OIDC scope.
+  source: https://oauth.simaster.ugm.ac.id/.well-known/openid-configuration
+  scope: institution-local
+
+- term: userDetail.read
+  type: scope
+  definition: >-
+    Read the full Simaster user record, including reading another user's record by username. The
+    broadest scope the server issues. UGM-defined.
+  source: https://oauth.simaster.ugm.ac.id/.well-known/openid-configuration
+  scope: institution-local
+
+- term: repository civitas UGM
+  type: system
+  definition: >-
+    The institutional repository's own repositoryName as returned by OAI-PMH Identify. "Civitas" is
+    from civitas academica - the academic community - so the name means the repository of UGM's
+    academic community. Runs EPrints 3.3.15; administered by library@ugm.ac.id.
+  source: http://repository.ugm.ac.id/cgi/oai2?verb=Identify
+  scope: institution-local
+
+- term: Jurnal Universitas Gadjah Mada
+  english: UGM Journals
+  type: system
+  definition: >-
+    The repositoryName of UGM's university-wide Open Journal Systems platform at journal.ugm.ac.id,
+    administered by bpp.jurnal@ugm.ac.id. Each journal and journal section is exposed as an OAI set.
+  source: https://journal.ugm.ac.id/index/oai?verb=Identify
+  scope: institution-local
+
+- term: eLOK
+  indonesian: e-Learning Online Kampus
+  type: system
+  definition: >-
+    UGM's self-hosted Moodle learning platform at elok.ugm.ac.id. Its Moodle Web Services endpoint
+    is enabled and token-gated. The platform is UGM's deployment; the API contract is Moodle's
+    product API and no Moodle specification is saved under this slug.
+  source: https://elok.ugm.ac.id/webservice/rest/server.php
+  scope: institution-local
+
+- term: DTI
+  indonesian: Direktorat Teknologi Informasi
+  english: Directorate of Information Technology
+  type: organization
+  definition: >-
+    The UGM directorate that operates the identity, SSO and IT service estate, publishing at
+    dti.ugm.ac.id. Formerly DSSDI (Direktorat Sistem dan Sumber Daya Informasi) - dssdi.ugm.ac.id
+    now redirects to dti.ugm.ac.id, verified 2026-09-01.
+  source: https://dti.ugm.ac.id/
+  scope: institution-local
+
+- term: BPP
+  indonesian: Badan Penerbit dan Publikasi
+  english: Publishing and Publication Board
+  type: organization
+  definition: >-
+    The UGM body that administers the journal platform; adminEmail bpp.jurnal@ugm.ac.id on the OJS
+    OAI-PMH endpoint.
+  source: https://journal.ugm.ac.id/index/oai?verb=Identify
+  scope: institution-local
+
+- term: Etika Penggunaan AI
+  english: Ethics of AI Use
+  type: policy
+  definition: >-
+    UGM's AI usage ethics guidance, published by the IT services directorate as a landing page
+    linking to the full document. Governance prose, not an API artifact.
+  source: https://web.ugm.ac.id/etika-penggunaan-ai/
+  scope: institution-local
+
+- term: '10.22146'
+  type: identifier
+  definition: >-
+    Universitas Gadjah Mada's Crossref DOI prefix, registered to Crossref member 9411 in the
+    institution's own name. Every DOI minted by UGM journals begins with it.
+  source: https://api.crossref.org/prefixes/10.22146
+  scope: registry
+
+- term: 'https://sso.ugm.ac.id/idp/shibboleth'
+  type: identifier
+  definition: >-
+    The SAML entityID of UGM's own Shibboleth Identity Provider - the institution's canonical
+    machine-readable identity in any SAML federation it joins.
+  source: https://sso.ugm.ac.id/idp/profile/Metadata/SAML
+  scope: federation
+
+- term: 'https://ror.org/03ke6d638'
+  type: identifier
+  definition: >-
+    Universitas Gadjah Mada's Research Organization Registry identifier - the persistent
+    machine-readable identifier for the institution as an organisation.
+  source: https://api.ror.org/v2/organizations?query=Gadjah%20Mada
+  scope: registry
+
+standard_vocabularies_in_use:
+- vocabulary: OpenID Connect Core 1.0 claims
+  used_in: UGM ID
+  terms: [sub, iss, aud, exp, iat, auth_time, name, given_name, family_name, picture, email, email_verified, preferred_username]
+  note: Standard, unmodified, plus the UGM-local unit_id claim above.
+- vocabulary: OAuth 2.0 grant type URIs
+  used_in: UGM ID
+  terms: ['authorization_code', 'password', 'client_credentials', 'refresh_token', 'urn:ietf:params:oauth:grant-type:google_id_token', 'urn:ietf:params:oauth:grant-type:token-exchange']
+  note: >-
+    urn:ietf:params:oauth:grant-type:google_id_token is not an IETF-registered grant type despite
+    the urn:ietf:params prefix; it is a vendor-shaped extension. token-exchange is RFC 8693.
+- vocabulary: Dublin Core (oai_dc)
+  used_in: Both OAI-PMH endpoints
+  note: Also uketd_dc, didl, mets, rdf, oai_bibl on the repository; marcxml, oai_marc, nlm, rfc1807 on the journals.
+- vocabulary: SAML 2.0 metadata
+  used_in: Shibboleth IdP
+  terms: ['urn:oasis:names:tc:SAML:2.0:nameid-format:transient', 'urn:mace:shibboleth:1.0:nameIdentifier']
+
+absent:
+- No course, curriculum, credit or timetable vocabulary is published anywhere - there is no public
+  course catalog API.
+- No research-output vocabulary beyond Dublin Core; no CERIF, no openaire profile on either
+  OAI-PMH endpoint.
+- No controlled vocabulary or subject scheme is exposed for the repository's sets - the repository's
+  setSpecs are hex-encoded date strings (year=YYYY-MM-DD), not subject terms.

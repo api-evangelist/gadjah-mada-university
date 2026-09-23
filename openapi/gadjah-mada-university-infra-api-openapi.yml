@@ -1,0 +1,95 @@
+openapi: 3.2.0
+info:
+  description: Layanan OAuth 2.0 / OIDC Authorization Server untuk mengakses UGM API.
+  title: UGM ID Infra API
+  version: '2.0'
+servers:
+- description: Production Server
+  url: https://oauth.simaster.ugm.ac.id
+- description: Development Server
+  url: https://oauth.dev.ugm.ac.id
+tags:
+- description: Health check & infrastruktur
+  name: Infra
+paths:
+  /health:
+    get:
+      description: 'Cek status semua layanan. Tidak terkena rate limit.
+
+        - `ok` — semua layanan normal
+
+        - `degraded` — Simaster tidak terjangkau (non-fatal)
+
+        - `error` — primary DB atau Redis down'
+      operationId: healthCheck
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+          description: Server sehat
+        '503':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+          description: Server tidak sehat
+      summary: Health Check
+      tags:
+      - Infra
+components:
+  schemas:
+    HealthResponse:
+      properties:
+        services:
+          properties:
+            database:
+              properties:
+                status:
+                  enum:
+                  - ok
+                  - error
+                  type: string
+              type: object
+            redis:
+              properties:
+                status:
+                  enum:
+                  - ok
+                  - error
+                  - disabled
+                  type: string
+              type: object
+            simaster:
+              properties:
+                status:
+                  enum:
+                  - ok
+                  - error
+                  - disabled
+                  type: string
+              type: object
+          type: object
+        status:
+          enum:
+          - ok
+          - degraded
+          - error
+          type: string
+        timestamp:
+          format: date-time
+          type: string
+        version:
+          type: string
+      type: object
+  securitySchemes:
+    BasicAuth:
+      description: client_id:client_secret via Basic Auth header
+      scheme: basic
+      type: http
+    BearerAuth:
+      bearerFormat: JWT
+      description: Access token JWT dari /oauth/token
+      scheme: bearer
+      type: http

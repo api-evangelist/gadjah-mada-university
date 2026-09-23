@@ -1,0 +1,262 @@
+---
+generated: '2026-09-01'
+method: probed
+source: >-
+  Live probes on 2026-09-01 against the Kin Score `education` regime's domain standards list. Every
+  claim below points at a specific fetched location with a status code. Reward-only: standards not
+  evidenced are recorded as not_found rather than assumed, and nothing is inferred from a prose
+  claim on a web page.
+regime: education
+regime_id: education
+standards_probed:
+- scim
+- lti
+- oneroster
+- ed-fi
+- caliper
+- qti
+- oai-pmh
+- shibboleth
+- saml
+- orcid
+- datacite
+- crossref
+
+conformance:
+
+- standard: oai-pmh
+  status: conformant
+  x-operator: institution
+  confidence: high
+  summary: >-
+    UGM operates TWO independent, fully functional OAI-PMH 2.0 endpoints on its own hosts - the
+    institutional repository and the university-wide journal platform.
+  evidence:
+  - location: http://repository.ugm.ac.id/cgi/oai2?verb=Identify
+    status: 200
+    detail: >-
+      repositoryName "repository civitas UGM", adminEmail library@ugm.ac.id, protocolVersion 2.0,
+      earliestDatestamp 2014-01-06T06:46:00Z, deletedRecord persistent, granularity
+      YYYY-MM-DDThh:mm:ssZ, EPrints 3.3.15.
+  - location: http://repository.ugm.ac.id/cgi/oai2?verb=ListMetadataFormats
+    status: 200
+    detail: 'Six prefixes: didl, mets, oai_bibl, oai_dc, rdf, uketd_dc.'
+  - location: http://repository.ugm.ac.id/cgi/oai2?verb=ListIdentifiers&metadataPrefix=oai_dc
+    status: 200
+    detail: 100 identifiers returned in the first page - real harvestable content, not an empty set.
+  - location: https://journal.ugm.ac.id/index/oai?verb=Identify
+    status: 200
+    detail: >-
+      repositoryName "Jurnal Universitas Gadjah Mada", adminEmail bpp.jurnal@ugm.ac.id, gzip and
+      deflate compression advertised, Open Journal Systems 2.4.8.1.
+  - location: https://journal.ugm.ac.id/index/oai?verb=ListRecords&metadataPrefix=oai_dc
+    status: 200
+    detail: 100 records in the first page across 100+ journal sets.
+  - location: openapi/gadjah-mada-university-repository-oai-pmh-openapi.yml
+    status: local
+    detail: Derived contract for the repository endpoint (method - derived, not institution-authored).
+  caveat: >-
+    The repository's eprints description block leaves metadataPolicy, dataPolicy and
+    submissionPolicy at the EPrints default "not yet been fully configured" text. The protocol
+    conforms; the rights statement it is supposed to carry does not exist.
+
+- standard: saml
+  status: conformant
+  x-operator: institution
+  confidence: high
+  summary: >-
+    SAML 2.0 and SAML 1.1 Identity Provider operated by UGM at sso.ugm.ac.id, publishing its own
+    EntityDescriptor.
+  evidence:
+  - location: https://sso.ugm.ac.id/idp/profile/Metadata/SAML
+    status: 200
+    detail: >-
+      6379 bytes, application/xml. entityID https://sso.ugm.ac.id/idp/shibboleth.
+      IDPSSODescriptor protocolSupportEnumeration lists urn:oasis:names:tc:SAML:2.0:protocol and
+      urn:oasis:names:tc:SAML:1.1:protocol. SSO bindings - HTTP-Redirect, HTTP-POST,
+      HTTP-POST-SimpleSign. SingleLogoutService on HTTP-Redirect, HTTP-POST and SOAP. A separate
+      AttributeAuthorityDescriptor exposes SAML 1.0 and SAML 2.0 SOAP AttributeQuery. Saved as
+      authentication/gadjah-mada-university-saml-idp-metadata.xml.
+  - location: https://sso.ugm.ac.id/idp/shibboleth
+    status: 200
+    detail: The entityID itself resolves and serves the same descriptor.
+
+- standard: shibboleth
+  status: conformant
+  x-operator: institution
+  confidence: high
+  summary: >-
+    The IdP is a Shibboleth deployment - it advertises the native Shibboleth 1.0 authn profile and
+    carries a shibmd:Scope extension.
+  evidence:
+  - location: https://sso.ugm.ac.id/idp/profile/Metadata/SAML
+    status: 200
+    detail: >-
+      protocolSupportEnumeration includes urn:mace:shibboleth:1.0; SingleSignOnService binding
+      urn:mace:shibboleth:1.0:profiles:AuthnRequest at
+      https://sso.ugm.ac.id/idp/profile/Shibboleth/SSO; NameIDFormat
+      urn:mace:shibboleth:1.0:nameIdentifier; shibmd:Scope extension present on both the
+      IDPSSODescriptor and the AttributeAuthorityDescriptor.
+  caveat: >-
+    Two real defects, recorded rather than smoothed over. The shibmd:Scope is declared as "ac.id"
+    rather than "ugm.ac.id" - an assertion of authority over the entire Indonesian academic
+    namespace. And the entity is absent from the eduGAIN aggregate (10,616 entities retrieved
+    2026-09-01, no ugm.ac.id entity), so the IdP is self-published and not inter-federated. It is
+    institution-operated and standards-conformant; it is not discoverable through a federation.
+
+- standard: crossref
+  status: conformant
+  x-operator: registry
+  confidence: high
+  summary: >-
+    Universitas Gadjah Mada is a Crossref member in its own name and owns a DOI prefix. This is a
+    fact about the institution recorded through a registry it is registered in - the registry's own
+    contract is Crossref's and is not saved here.
+  evidence:
+  - location: https://api.crossref.org/prefixes/10.22146
+    status: 200
+    detail: >-
+      Returns member https://id.crossref.org/member/9411 with name "Universitas Gadjah Mada" for
+      prefix 10.22146.
+  - location: https://api.crossref.org/members?query=gadjah+mada
+    status: 200
+    detail: 'Member id 9411, primary-name "Universitas Gadjah Mada", prefixes ["10.22146"].'
+  - location: https://journal.ugm.ac.id/
+    status: 200
+    detail: >-
+      The OJS platform displays a Crossref badge and UGM journal articles are registered under the
+      10.22146 prefix, which links the registry membership to the institution-operated surface.
+
+- standard: datacite
+  status: not_found
+  x-operator: null
+  confidence: high
+  summary: No DataCite repository/client registration found for UGM.
+  evidence:
+  - location: https://api.datacite.org/clients?query=gadjah
+    status: 200
+    detail: Zero results. UGM registers DOIs through Crossref, not DataCite.
+  - location: https://api.datacite.org/providers?query=gadjah
+    status: 200
+    detail: Zero results.
+
+- standard: orcid
+  status: not_found
+  x-operator: null
+  confidence: medium
+  summary: >-
+    No evidence of an ORCID institutional membership or of ORCID integration in any
+    UGM-operated system.
+  evidence:
+  - location: https://pub.orcid.org/v3.0/expanded-search/?q=affiliation-org-name:%22Universitas%20Gadjah%20Mada%22
+    status: 200
+    detail: >-
+      17,922 ORCID records name Universitas Gadjah Mada as an affiliation. That is 17,922
+      individual researchers self-asserting an affiliation - it is NOT an institutional membership
+      and is explicitly not counted as one here. No ORCID member record, no ORCID-enabled sign-in
+      on UGM ID (the OIDC server offers Google, Microsoft, Facebook, LinkedIn and Apple social
+      login and no ORCID), and no ORCID field in the repository's OAI-PMH oai_dc output.
+
+- standard: scim
+  status: not_found
+  confidence: medium
+  summary: >-
+    No SCIM 2.0 provisioning endpoint found, despite UGM operating a full OAuth 2.0 / OIDC identity
+    server where one would naturally sit.
+  evidence:
+  - location: https://oauth.simaster.ugm.ac.id/openapi.json
+    status: 200
+    detail: >-
+      Twenty operations across five tags (OAuth2, Discovery, API, Social Login, Infra). No /Users,
+      /Groups, /ServiceProviderConfig, /Schemas or /ResourceTypes path. Identity is readable
+      (GET /api/me, /user/me, /user/username/{username}) and not writable - every operation on the
+      server is a GET or an OAuth POST. Provisioning is not exposed.
+
+- standard: lti
+  status: not_found
+  confidence: medium
+  summary: No LTI 1.3 / LTI Advantage tool or platform registration surface found.
+  evidence:
+  - location: https://elok.ugm.ac.id/
+    status: 200
+    detail: >-
+      eLOK is UGM's self-hosted Moodle learning platform (Moodle markup confirmed in the served
+      HTML). Moodle supports LTI, but no public LTI platform registration document and no OIDC
+      login-initiation endpoint for LTI was found.
+  - location: https://elok.ugm.ac.id/mod/lti/
+    status: 404
+    detail: >-
+      No publicly reachable LTI module surface. This does not prove LTI is unconfigured inside the
+      platform - it proves nothing LTI-shaped is exposed to an unauthenticated caller.
+  - location: https://oauth.simaster.ugm.ac.id/.well-known/openid-configuration
+    status: 200
+    detail: No LTI-specific claims, scopes or message types in the discovery document.
+
+- standard: oneroster
+  status: not_found
+  confidence: medium
+  summary: No IMS OneRoster REST or CSV surface found.
+  evidence:
+  - location: https://akademik.ugm.ac.id/
+    status: 200
+    detail: >-
+      The academic directorate site is human HTML only. No /ims/oneroster/ path exists on any UGM
+      host probed, and no roster API is documented.
+  - location: https://simaster.ugm.ac.id/api
+    status: 403
+    detail: >-
+      The student information system refuses anonymous callers at the edge. Whether anything
+      OneRoster-shaped sits behind it cannot be determined from outside; recorded as not_found, not
+      as absent.
+
+- standard: ed-fi
+  status: not_found
+  confidence: high
+  summary: >-
+    Ed-Fi is a US K-12 data standard with no adoption footprint in Indonesian higher education.
+    No Ed-Fi ODS/API surface found.
+  evidence:
+  - location: https://oauth.simaster.ugm.ac.id/openapi.json
+    status: 200
+    detail: No Ed-Fi resources, descriptors or ODS paths.
+
+- standard: caliper
+  status: not_found
+  confidence: medium
+  summary: No IMS Caliper Analytics sensor or event store endpoint found.
+  evidence:
+  - location: https://elok.ugm.ac.id/webservice/rest/server.php
+    status: 200
+    detail: >-
+      The Moodle Web Services endpoint IS enabled and live - it returns the Moodle exception
+      <ERRORCODE>invalidtoken</ERRORCODE> rather than a disabled-service error, and
+      https://elok.ugm.ac.id/login/token.php (200) issues tokens. That is Moodle's own product API
+      on UGM's host, not a Caliper event stream, and no Caliper sensor endpoint was found.
+  - location: https://analytics.penelitian.ugm.ac.id/
+    status: 403
+    detail: >-
+      A research analytics host exists but refuses anonymous callers. Bot-blocked, not absent -
+      recorded as unreadable rather than as evidence either way.
+
+- standard: qti
+  status: not_found
+  confidence: medium
+  summary: No QTI assessment interchange surface found.
+  evidence:
+  - location: https://elok.ugm.ac.id/
+    status: 200
+    detail: >-
+      Moodle can import and export QTI, but no public QTI service, item bank API or exchange
+      endpoint is exposed. Assessment interchange, if it happens, happens inside the platform.
+
+summary:
+  conformant: 4
+  conformant_standards: [oai-pmh, saml, shibboleth, crossref]
+  not_found: 8
+  note: >-
+    Four of the twelve education-regime standards are evidenced, and all four are backed by a
+    fetched artifact rather than a claim. The four that hit are the ones a research university
+    actually runs - metadata harvesting, federated identity and DOI registration. The eight that
+    miss are the teaching-and-learning interoperability standards (LTI, OneRoster, Caliper, QTI,
+    Ed-Fi) plus SCIM, ORCID and DataCite; UGM's learning platform is Moodle and its assessment and
+    roster data stay inside it. Nothing here was credited from a prose claim.

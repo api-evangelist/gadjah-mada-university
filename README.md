@@ -64,51 +64,81 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Gadjah Mada University (Universitas Gadjah Mada, UGM) is a public research university in Yogyakarta, Indonesia, ranked #239 in the QS World University Rankings 2025. This repository catalogs UGM's public developer/API footprint as an [APIs.json](https://apisjson.org) profile. That footprint is limited: the most concrete public, no-auth API is the institutional repository's OAI-PMH endpoint, alongside a centralized CAS single sign-on service.
+Gadjah Mada University (Universitas Gadjah Mada, UGM) is a public research university in Yogyakarta, Indonesia, founded in 1949 and ranked #239 in the QS World University Rankings 2025. This repository catalogs UGM's public developer/API footprint as an [APIs.json](https://apisjson.org) profile.
+
+Re-profiled 2026-09-01 under the API Evangelist university pipeline. UGM turns out to be one of the few institutions in this cohort that publishes a first-party API contract of its own: an **OpenAPI 3.1.0 document for UGM ID**, its OAuth 2.0 / OpenID Connect authorization server, served from its own host behind its own Swagger UI. Around it sit a self-published Shibboleth SAML 2.0 Identity Provider, a CAS server, and two independent, fully functional OAI-PMH 2.0 endpoints. What UGM does not have is a developer programme: no portal, no self-service registration, no changelog, no status page, no terms of service.
 
 - APIs.json: https://raw.githubusercontent.com/api-evangelist/gadjah-mada-university/refs/heads/main/apis.yml
 - Run with Naftiko: https://github.com/naftiko/fleet?utm_source=api-evangelist&utm_medium=readme&utm_campaign=gadjah-mada-university-api-evangelist&utm_content=repo
 
 ## Type
 
-- Index / Consumer / 3rd-Party
+- University / Public Research University / Index / Consumer / 3rd-Party
 
 ## Tags
 
-Education, Higher Education, University, Indonesia, Research, Open Data, Library, Repository
+University, Higher Education, Education, Indonesia, Research, Identity Federation, Authentication, OpenID Connect, OAuth, Research Repository, Scholarly Publishing, OAI-PMH, Library
 
 ## APIs
 
-- **UGM Repository OAI-PMH** — OAI-PMH 2.0 metadata harvesting for the EPrints institutional repository ("repository civitas UGM"). Docs: http://repository.ugm.ac.id/information.html — Base: http://repository.ugm.ac.id/cgi/oai2
-- **UGM Single Sign-On (CAS)** — Central Authentication Service used across UGM systems; credential-gated authentication service. Docs: https://dti.ugm.ac.id/knowledge-base/akses-365 — Base: https://sso.ugm.ac.id/cas
+Every entry carries an `x-operator` settled before any artifact was saved. `institution` means UGM runs the thing the surface describes; `registry` means UGM is registered in it, which is a fact about the institution and not a contract it wrote.
 
-## Plans
+- **UGM ID — OAuth 2.0 / OpenID Connect Authorization Server** (`institution`) — UGM's own identity API, operated by DTI in front of SIMASTER. 20 operations, OIDC Discovery + RFC 8414 metadata, PKCE, RFC 7662 introspection, RFC 7009 revocation, RFC 8693 token exchange, public health check. Spec: https://oauth.simaster.ugm.ac.id/openapi.json — Docs: https://oauth.simaster.ugm.ac.id/docs — Base: https://oauth.simaster.ugm.ac.id
+- **UGM Shibboleth SAML 2.0 Identity Provider** (`institution`) — entityID `https://sso.ugm.ac.id/idp/shibboleth`, self-published EntityDescriptor. Base: https://sso.ugm.ac.id/idp/profile/Metadata/SAML
+- **UGM Institutional Repository OAI-PMH** (`institution`) — "repository civitas UGM", EPrints 3.3.15, six metadata prefixes. Base: http://repository.ugm.ac.id/cgi/oai2
+- **UGM Journals OAI-PMH** (`institution`) — "Jurnal Universitas Gadjah Mada", Open Journal Systems, 100+ journal sets, DOIs under UGM's own Crossref prefix. Base: https://journal.ugm.ac.id/index/oai
+- **UGM Single Sign-On (CAS)** (`institution`) — Base: https://sso.ugm.ac.id/cas
+- **eLOK Moodle Web Services** (`institution` deployment, Moodle's contract) — self-hosted Moodle with web services enabled and token-gated. No Moodle specification is held here. Base: https://elok.ugm.ac.id/webservice/rest/server.php
+- **Crossref membership** (`registry`) — member 9411, DOI prefix 10.22146.
+- **ROR organization record** (`registry`) — https://ror.org/03ke6d638
 
-- [plans/gadjah-mada-university-plans-pricing.yml](plans/gadjah-mada-university-plans-pricing.yml)
+## Artifacts
 
-## Rate Limits
+- OpenAPI: [openapi/](openapi/) — one searched (UGM's own, pristine copy in `openapi/_original/`) and two derived OAI-PMH contracts
+- [authentication/](authentication/) — three identity stacks, plus UGM's SAML EntityDescriptor
+- [scopes/](scopes/) · [json-schema/](json-schema/) · [examples/](examples/) · [errors/](errors/)
+- [conformance/](conformance/) — the `education` regime's 12 domain standards, probed
+- [lifecycle/](lifecycle/) · [rules/](rules/) · [vocabulary/](vocabulary/)
+- [plans/](plans/gadjah-mada-university-plans-pricing.yml) · [rate-limits/](rate-limits/gadjah-mada-university-rate-limits.yml) · [finops/](finops/gadjah-mada-university-finops.yml)
 
-- [rate-limits/gadjah-mada-university-rate-limits.yml](rate-limits/gadjah-mada-university-rate-limits.yml)
+## Domain standard conformance (education regime)
 
-## FinOps
-
-- [finops/gadjah-mada-university-finops.yml](finops/gadjah-mada-university-finops.yml)
+Four of twelve evidenced against a fetched artifact: **oai-pmh**, **saml**, **shibboleth**, **crossref**. Not found: scim, lti, oneroster, ed-fi, caliper, qti, orcid, datacite. Nothing was credited from a prose claim.
 
 ## Timestamps
 
 - Created: 2026-06-03
-- Modified: 2026-06-03
+- Modified: 2026-09-01
 
 ## Common Properties
 
 - Website: https://ugm.ac.id/en/
-- GitHub: https://github.com/ugm-ac-id (org exists, no public repos)
+- API Reference: https://oauth.simaster.ugm.ac.id/docs
+- Status: https://oauth.simaster.ugm.ac.id/health
+- Privacy Policy: https://ugm.ac.id/en/privacy-policy/
+- Identity Federation: https://sso.ugm.ac.id/idp/profile/Metadata/SAML
+- Research Repository: http://repository.ugm.ac.id/
+- Scholarly Publishing: https://journal.ugm.ac.id/
+- Library Catalog: https://opac.lib.ugm.ac.id/
+- AI Policy: https://web.ugm.ac.id/etika-penggunaan-ai/
+- GitHub: https://github.com/ugm-ac-id (org exists, zero public repos)
 - LinkedIn: https://www.linkedin.com/school/universitas-gadjah-mada/
 - Review: [review.yml](review.yml)
 
 ## Notes
 
-All URLs in this profile were probed directly. The OAI-PMH endpoint was verified live via an `Identify` request (returns `repository civitas UGM`, EPrints, admin `library@ugm.ac.id`). The CAS login endpoint resolves (HTTP 200) but is an authentication service requiring valid UGM credentials, not an open data API. The ETD repository resolves but exposed no OAI endpoint at the standard path. A student-run (BEM KM) open-data portal at opendata.bemkm.ugm.ac.id resolves but publishes no documented public API. No official developer portal, REST API documentation, or public signup flow was found. No endpoints were fabricated.
+Every URL in this profile was probed directly on 2026-09-01 and the full status-coded evidence table is in `x-coverage.evidence` in [apis.yml](apis.yml). Findings recorded rather than smoothed over:
+
+- UGM's own OIDC and RFC 8414 discovery documents emit **scheme-less URLs** (`oauth.simaster.ugm.ac.id/oauth/token`), which both specifications forbid.
+- The JWKS endpoint returns **200 with an empty key set** while advertising RS256 id_tokens.
+- `https://repository.ugm.ac.id` returns **403** while `http://` returns **200**, so pointers to the repository are deliberately `http://`.
+- The Shibboleth IdP declares `shibmd:Scope` as **`ac.id`** rather than `ugm.ac.id`, and is **absent from eduGAIN** (10,616 entities checked) — self-published, not inter-federated.
+- The journal platform runs **OJS 2.4.8.1**, an end-of-life line, with a partial migration to OJS 3 under way and no published schedule.
+- `data.ugm.ac.id` returns **HTTP 200 serving a maintenance page** — a soft-404. There is no open data portal. `api.ugm.ac.id` and `hpc.ugm.ac.id` do not resolve. `ai.ugm.ac.id` 502s. The student-run `opendata.bemkm.ugm.ac.id` returns 200 with a **zero-byte body**.
+- The whole `/.well-known/` path on ugm.ac.id is **403'd at the edge**, so the absence of `security.txt` cannot be distinguished from a block.
+- The main site's WordPress REST API returns a machine-readable **401 refusal** — a closed surface, not an API.
+
+No vendor contract was found in this repository and none was added; nothing was removed. Only ONE contract is credited to UGM as authored — the UGM ID OpenAPI, which UGM publishes itself. The two OAI-PMH OpenAPIs are marked `method: derived` and are ours. No EPrints, OJS/PKP or Moodle product specification is held under this slug. No endpoints were fabricated.
 
 ## Maintainers
 
