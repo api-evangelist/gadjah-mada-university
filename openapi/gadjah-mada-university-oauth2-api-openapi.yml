@@ -279,36 +279,6 @@ paths:
       - OAuth2
 components:
   schemas:
-    ErrorResponse:
-      properties:
-        error:
-          type: string
-        error_description:
-          type: string
-        message:
-          type: string
-      type: object
-    UserInfoResponse:
-      description: OIDC UserInfo claims
-      properties:
-        email:
-          type: string
-        email_verified:
-          type: boolean
-        family_name:
-          type: string
-        given_name:
-          type: string
-        name:
-          type: string
-        picture:
-          type: string
-        preferred_username:
-          type: string
-        sub:
-          description: Username
-          type: string
-      type: object
     IntrospectResponse:
       properties:
         active:
@@ -349,6 +319,27 @@ components:
           example: Bearer
           type: string
       type: object
+    UserInfoResponse:
+      description: OIDC UserInfo claims
+      properties:
+        email:
+          type: string
+        email_verified:
+          type: boolean
+        family_name:
+          type: string
+        given_name:
+          type: string
+        name:
+          type: string
+        picture:
+          type: string
+        preferred_username:
+          type: string
+        sub:
+          description: Username
+          type: string
+      type: object
     TokenResponse:
       description: Respons token OAuth2
       example:
@@ -375,6 +366,15 @@ components:
           type: string
         token_type:
           example: Bearer
+          type: string
+      type: object
+    ErrorResponse:
+      properties:
+        error:
+          type: string
+        error_description:
+          type: string
+        message:
           type: string
       type: object
   responses:

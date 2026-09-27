@@ -1,7 +1,7 @@
 openapi: 3.2.0
 info:
   description: Layanan OAuth 2.0 / OIDC Authorization Server untuk mengakses UGM API.
-  title: UGM ID API
+  title: UGM ID User API
   version: '2.0'
 servers:
 - description: Production Server
@@ -9,29 +9,8 @@ servers:
 - description: Development Server
   url: https://oauth.dev.ugm.ac.id
 tags:
-- description: Resource API (butuh Bearer token)
-  name: api
+- name: User
 paths:
-  /api/me:
-    get:
-      description: Mengambil username, email, nama, picture, provider. Scope `user.read` diperlukan.
-      operationId: getMe
-      responses:
-        '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserData'
-          description: Data user berhasil
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-      security:
-      - BearerAuth: []
-      summary: Data User — Profil Dasar
-      tags:
-      - api
   /user/me:
     get:
       description: 'Mengambil data lengkap user dari Simaster termasuk `user_tipe`, `identitas`,
@@ -53,7 +32,7 @@ paths:
       - BearerAuth: []
       summary: Data User — Profil Lengkap (Simaster)
       tags:
-      - api
+      - User
   /user/username/{username}:
     get:
       description: 'Mengambil data user berdasarkan username. Scope `user.read` diperlukan.
@@ -84,8 +63,21 @@ paths:
       - BearerAuth: []
       summary: Data User by Username
       tags:
-      - api
+      - User
 components:
+  responses:
+    Unauthorized:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+      description: Token tidak valid atau tidak disertakan
+    Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+      description: Scope tidak mencukupi atau akses ditolak
   schemas:
     ErrorResponse:
       properties:
@@ -94,33 +86,6 @@ components:
         error_description:
           type: string
         message:
-          type: string
-      type: object
-    UserData:
-      description: Profil dasar user dari /api/me
-      properties:
-        email:
-          example: johndoe@ugm.ac.id
-          type: string
-        family_name:
-          type: string
-        given_name:
-          type: string
-        name:
-          type: string
-        picture:
-          type: string
-        provider:
-          enum:
-          - cas_sso
-          - google
-          - microsoft
-          - facebook
-          - linkedin
-          - apple
-          type: string
-        username:
-          example: johndoe
           type: string
       type: object
     UserDetailData:
@@ -179,19 +144,6 @@ components:
           example: johndoe
           type: string
       type: object
-  responses:
-    Forbidden:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-      description: Scope tidak mencukupi atau akses ditolak
-    Unauthorized:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-      description: Token tidak valid atau tidak disertakan
   securitySchemes:
     BasicAuth:
       description: client_id:client_secret via Basic Auth header

@@ -268,49 +268,6 @@ apis:
       Gadjah Mada", links [https://ugm.ac.id]
     status: 200
     probed: '2026-09-01'
-- aid: gadjah-mada-university:gadjah-mada-university-api-api
-  name: Gadjah Mada University API
-  description: Resource API (butuh Bearer token)
-  humanURL: https://oauth.simaster.ugm.ac.id/docs
-  baseURL: https://oauth.simaster.ugm.ac.id
-  tags: []
-  tags_raw:
-  - API
-  properties:
-  - type: OpenAPI
-    url: openapi/gadjah-mada-university-api-api-openapi.yml
-  - type: x-openapi-original
-    url: openapi/_original/gadjah-mada-university-ugm-id-openapi.json
-  - type: APIReference
-    url: https://oauth.simaster.ugm.ac.id/docs
-  - type: Documentation
-    url: https://oauth.simaster.ugm.ac.id/openapi.json
-  - type: x-openid-configuration
-    url: https://oauth.simaster.ugm.ac.id/.well-known/openid-configuration
-  - type: x-oauth-authorization-server
-    url: https://oauth.simaster.ugm.ac.id/.well-known/oauth-authorization-server
-  - type: Authentication
-    url: authentication/gadjah-mada-university-authentication.yml
-  - type: Scopes
-    url: scopes/gadjah-mada-university-scopes.yml
-  - type: JSONSchema
-    url: json-schema/gadjah-mada-university-ugm-id-schemas.json
-  - type: Examples
-    url: examples/gadjah-mada-university-ugm-id-examples.yml
-  - type: Errors
-    url: errors/gadjah-mada-university-errors.yml
-  - type: Rules
-    url: rules/gadjah-mada-university-rules.yml
-  - type: Status
-    url: https://oauth.simaster.ugm.ac.id/health
-  - type: Documentation
-    url: http://repository.ugm.ac.id/information.html
-  - type: Conformance
-    url: conformance/gadjah-mada-university-conformance.yml
-  - type: Documentation
-    url: https://journal.ugm.ac.id/
-  - type: Lifecycle
-    url: lifecycle/gadjah-mada-university-lifecycle.yml
 - aid: gadjah-mada-university:gadjah-mada-university-discovery-api
   name: Gadjah Mada University Discovery API
   description: RFC 8414 & OIDC Discovery
@@ -491,6 +448,90 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/gadjah-mada-university-oauth2-api-openapi.yml
+  - type: x-openapi-original
+    url: openapi/_original/gadjah-mada-university-ugm-id-openapi.json
+  - type: APIReference
+    url: https://oauth.simaster.ugm.ac.id/docs
+  - type: Documentation
+    url: https://oauth.simaster.ugm.ac.id/openapi.json
+  - type: x-openid-configuration
+    url: https://oauth.simaster.ugm.ac.id/.well-known/openid-configuration
+  - type: x-oauth-authorization-server
+    url: https://oauth.simaster.ugm.ac.id/.well-known/oauth-authorization-server
+  - type: Authentication
+    url: authentication/gadjah-mada-university-authentication.yml
+  - type: Scopes
+    url: scopes/gadjah-mada-university-scopes.yml
+  - type: JSONSchema
+    url: json-schema/gadjah-mada-university-ugm-id-schemas.json
+  - type: Examples
+    url: examples/gadjah-mada-university-ugm-id-examples.yml
+  - type: Errors
+    url: errors/gadjah-mada-university-errors.yml
+  - type: Rules
+    url: rules/gadjah-mada-university-rules.yml
+  - type: Status
+    url: https://oauth.simaster.ugm.ac.id/health
+  - type: Documentation
+    url: http://repository.ugm.ac.id/information.html
+  - type: Conformance
+    url: conformance/gadjah-mada-university-conformance.yml
+  - type: Documentation
+    url: https://journal.ugm.ac.id/
+  - type: Lifecycle
+    url: lifecycle/gadjah-mada-university-lifecycle.yml
+- aid: gadjah-mada-university:gadjah-mada-university-me-api
+  name: Gadjah Mada University Me API
+  description: The Me API from Gadjah Mada University — 1 operation(s) for me.
+  humanURL: https://sso.ugm.ac.id/
+  baseURL: https://sso.ugm.ac.id/idp/profile/Metadata/SAML
+  tags:
+  - Me
+  properties:
+  - type: OpenAPI
+    url: openapi/gadjah-mada-university-me-api-openapi.yml
+  - type: x-openapi-original
+    url: openapi/_original/gadjah-mada-university-ugm-id-openapi.json
+  - type: APIReference
+    url: https://oauth.simaster.ugm.ac.id/docs
+  - type: Documentation
+    url: https://oauth.simaster.ugm.ac.id/openapi.json
+  - type: x-openid-configuration
+    url: https://oauth.simaster.ugm.ac.id/.well-known/openid-configuration
+  - type: x-oauth-authorization-server
+    url: https://oauth.simaster.ugm.ac.id/.well-known/oauth-authorization-server
+  - type: Authentication
+    url: authentication/gadjah-mada-university-authentication.yml
+  - type: Scopes
+    url: scopes/gadjah-mada-university-scopes.yml
+  - type: JSONSchema
+    url: json-schema/gadjah-mada-university-ugm-id-schemas.json
+  - type: Examples
+    url: examples/gadjah-mada-university-ugm-id-examples.yml
+  - type: Errors
+    url: errors/gadjah-mada-university-errors.yml
+  - type: Rules
+    url: rules/gadjah-mada-university-rules.yml
+  - type: Status
+    url: https://oauth.simaster.ugm.ac.id/health
+  - type: Documentation
+    url: http://repository.ugm.ac.id/information.html
+  - type: Conformance
+    url: conformance/gadjah-mada-university-conformance.yml
+  - type: Documentation
+    url: https://journal.ugm.ac.id/
+  - type: Lifecycle
+    url: lifecycle/gadjah-mada-university-lifecycle.yml
+- aid: gadjah-mada-university:gadjah-mada-university-user-api
+  name: Gadjah Mada University User API
+  description: The User API from Gadjah Mada University — 2 operation(s) for user.
+  humanURL: https://sso.ugm.ac.id/
+  baseURL: https://sso.ugm.ac.id/idp/profile/Metadata/SAML
+  tags:
+  - User
+  properties:
+  - type: OpenAPI
+    url: openapi/gadjah-mada-university-user-api-openapi.yml
   - type: x-openapi-original
     url: openapi/_original/gadjah-mada-university-ugm-id-openapi.json
   - type: APIReference
