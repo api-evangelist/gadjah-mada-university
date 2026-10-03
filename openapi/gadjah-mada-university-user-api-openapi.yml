@@ -65,29 +65,7 @@ paths:
       tags:
       - User
 components:
-  responses:
-    Unauthorized:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-      description: Token tidak valid atau tidak disertakan
-    Forbidden:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-      description: Scope tidak mencukupi atau akses ditolak
   schemas:
-    ErrorResponse:
-      properties:
-        error:
-          type: string
-        error_description:
-          type: string
-        message:
-          type: string
-      type: object
     UserDetailData:
       description: Profil lengkap user dari Simaster (/user/me, /user/username/:username)
       properties:
@@ -144,6 +122,28 @@ components:
           example: johndoe
           type: string
       type: object
+    ErrorResponse:
+      properties:
+        error:
+          type: string
+        error_description:
+          type: string
+        message:
+          type: string
+      type: object
+  responses:
+    Unauthorized:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+      description: Token tidak valid atau tidak disertakan
+    Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+      description: Scope tidak mencukupi atau akses ditolak
   securitySchemes:
     BasicAuth:
       description: client_id:client_secret via Basic Auth header

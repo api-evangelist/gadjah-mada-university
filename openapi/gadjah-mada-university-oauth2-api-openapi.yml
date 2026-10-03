@@ -279,46 +279,6 @@ paths:
       - OAuth2
 components:
   schemas:
-    IntrospectResponse:
-      properties:
-        active:
-          description: True jika token valid dan belum expired
-          type: boolean
-        client_id:
-          type: string
-        data:
-          description: Data user (hanya untuk user-based grants)
-          properties:
-            attributes:
-              items:
-                type: object
-              type: array
-            client_id:
-              type: string
-            email:
-              type: string
-            unit_id:
-              type: integer
-            username:
-              type: string
-          type: object
-        exp:
-          type: integer
-        grant_type:
-          type: string
-        iat:
-          type: integer
-        iss:
-          type: string
-        scope:
-          type: string
-        sub:
-          description: Username (untuk user-based grants)
-          type: string
-        token_type:
-          example: Bearer
-          type: string
-      type: object
     UserInfoResponse:
       description: OIDC UserInfo claims
       properties:
@@ -377,7 +337,53 @@ components:
         message:
           type: string
       type: object
+    IntrospectResponse:
+      properties:
+        active:
+          description: True jika token valid dan belum expired
+          type: boolean
+        client_id:
+          type: string
+        data:
+          description: Data user (hanya untuk user-based grants)
+          properties:
+            attributes:
+              items:
+                type: object
+              type: array
+            client_id:
+              type: string
+            email:
+              type: string
+            unit_id:
+              type: integer
+            username:
+              type: string
+          type: object
+        exp:
+          type: integer
+        grant_type:
+          type: string
+        iat:
+          type: integer
+        iss:
+          type: string
+        scope:
+          type: string
+        sub:
+          description: Username (untuk user-based grants)
+          type: string
+        token_type:
+          example: Bearer
+          type: string
+      type: object
   responses:
+    BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+      description: Permintaan tidak valid
     OAuth2Error:
       content:
         application/json:
@@ -390,12 +396,6 @@ components:
                 type: string
             type: object
       description: OAuth2 error response
-    BadRequest:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-      description: Permintaan tidak valid
     Unauthorized:
       content:
         application/json:
