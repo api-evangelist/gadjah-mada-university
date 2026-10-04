@@ -72,7 +72,6 @@ tags:
 - Research
 - Identity Federation
 - Authentication
-- OpenID Connect
 - Research Repository
 - Scholarly Publishing
 - OAI-PMH
@@ -85,7 +84,6 @@ tags_raw:
 - Research
 - Identity Federation
 - Authentication
-- OpenID Connect
 - OAuth
 - Research Repository
 - Scholarly Publishing
@@ -565,6 +563,9 @@ apis:
   - type: Lifecycle
     url: lifecycle/gadjah-mada-university-lifecycle.yml
 common:
+- type: CapabilityMap
+  url: capabilities/gadjah-mada-university-capability-edges.yml
+  name: Gadjah Mada University Business Capability Map
 - type: Website
   url: https://ugm.ac.id/en/
 - type: APIReference
@@ -806,3 +807,5 @@ x-attribution-note:
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
+x-tags-removed:
+- OpenID Connect
