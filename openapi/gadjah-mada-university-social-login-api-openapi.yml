@@ -120,22 +120,16 @@ paths:
       - Social Login
 components:
   parameters:
-    OAuthClientId:
-      in: query
-      name: client_id
-      required: true
-      schema:
-        type: string
     OAuthState:
       in: query
       name: state
       required: false
       schema:
         type: string
-    OAuthScope:
+    OAuthClientId:
       in: query
-      name: scope
-      required: false
+      name: client_id
+      required: true
       schema:
         type: string
     OAuthRedirectUri:
@@ -144,6 +138,19 @@ components:
       required: true
       schema:
         type: string
+    OAuthScope:
+      in: query
+      name: scope
+      required: false
+      schema:
+        type: string
+  responses:
+    Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+      description: Scope tidak mencukupi atau akses ditolak
   schemas:
     ErrorResponse:
       properties:
@@ -154,13 +161,6 @@ components:
         message:
           type: string
       type: object
-  responses:
-    Forbidden:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-      description: Scope tidak mencukupi atau akses ditolak
   securitySchemes:
     BasicAuth:
       description: client_id:client_secret via Basic Auth header

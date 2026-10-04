@@ -70,18 +70,18 @@ components:
           type: string
       type: object
   responses:
-    Unauthorized:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-      description: Token tidak valid atau tidak disertakan
     Forbidden:
       content:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorResponse'
       description: Scope tidak mencukupi atau akses ditolak
+    Unauthorized:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+      description: Token tidak valid atau tidak disertakan
   securitySchemes:
     BasicAuth:
       description: client_id:client_secret via Basic Auth header
