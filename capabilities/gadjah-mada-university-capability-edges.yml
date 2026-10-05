@@ -1,0 +1,36 @@
+slug: gadjah-mada-university
+provider: Gadjah Mada University
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 2
+edges:
+- tag: OAuth2
+  spec_file: gadjah-mada-university-oauth2-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.82
+  evidence: '"Layanan OAuth 2.0 / OIDC Authorization Server"; operations "Otorisasi Pengguna (Authorization
+    Code + PKCE)", "Terbitkan Token OAuth2", "Cabut Token OAuth2 (RFC 7009)", "OIDC UserInfo Endpoint"'
+  reason: The operations are a full OAuth2/OIDC authorization-server surface (authorize, token, introspect,
+    revoke, logout, userinfo) for accessing university APIs — identity and access management, including
+    federation and token lifecycle. Not a business-domain capability of the university itself.
+- tag: Social Login
+  spec_file: gadjah-mada-university-social-login-api-openapi.yml
+  capability_id: BC-620.20
+  capability_id_l1: BC-620
+  capability_name: Identity & Access Management
+  confidence: 0.8
+  evidence: '"Login dengan Google", "Login dengan Microsoft 365 UGM", "Callback Apple Sign In"'
+  reason: Delegated authentication against external identity providers (Google, Apple, Microsoft, Facebook,
+    LinkedIn) — identity federation, which sits under Identity & Access Management. No other reading fits
+    a set of /authorize/{provider} endpoints.
