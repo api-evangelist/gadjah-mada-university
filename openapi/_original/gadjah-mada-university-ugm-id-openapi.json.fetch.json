@@ -1,0 +1,12 @@
+{
+ "url": "https://oauth.simaster.ugm.ac.id/openapi.json",
+ "requested_url": "https://oauth.simaster.ugm.ac.id/openapi.json",
+ "status": 200,
+ "content_type": "application/json",
+ "bytes": 19677,
+ "sha256": "29a9426a28029871b3a9cd4442c3a0e37b8681a0a874250e3a6a0179ea0b28a4",
+ "fetched_at": "2026-10-04",
+ "fetched_by": "APIEvangelist-Harvest/1.0 (+https://apievangelist.com)",
+ "match": "byte-identical",
+ "note": "Re-fetched from the provider by verify-openapi-sources.py; the archived file is byte-identical to what the provider serves."
+}
