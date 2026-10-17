@@ -120,6 +120,12 @@ paths:
       - Social Login
 components:
   parameters:
+    OAuthRedirectUri:
+      in: query
+      name: redirect_uri
+      required: true
+      schema:
+        type: string
     OAuthState:
       in: query
       name: state
@@ -129,12 +135,6 @@ components:
     OAuthClientId:
       in: query
       name: client_id
-      required: true
-      schema:
-        type: string
-    OAuthRedirectUri:
-      in: query
-      name: redirect_uri
       required: true
       schema:
         type: string

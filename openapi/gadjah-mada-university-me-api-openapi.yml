@@ -32,6 +32,19 @@ paths:
       tags:
       - Me
 components:
+  responses:
+    Forbidden:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+      description: Scope tidak mencukupi atau akses ditolak
+    Unauthorized:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+      description: Token tidak valid atau tidak disertakan
   schemas:
     UserData:
       description: Profil dasar user dari /api/me
@@ -69,19 +82,6 @@ components:
         message:
           type: string
       type: object
-  responses:
-    Forbidden:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-      description: Scope tidak mencukupi atau akses ditolak
-    Unauthorized:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-      description: Token tidak valid atau tidak disertakan
   securitySchemes:
     BasicAuth:
       description: client_id:client_secret via Basic Auth header

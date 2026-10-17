@@ -66,15 +66,6 @@ paths:
       - User
 components:
   schemas:
-    ErrorResponse:
-      properties:
-        error:
-          type: string
-        error_description:
-          type: string
-        message:
-          type: string
-      type: object
     UserDetailData:
       description: Profil lengkap user dari Simaster (/user/me, /user/username/:username)
       properties:
@@ -129,6 +120,15 @@ components:
           type: integer
         username:
           example: johndoe
+          type: string
+      type: object
+    ErrorResponse:
+      properties:
+        error:
+          type: string
+        error_description:
+          type: string
+        message:
           type: string
       type: object
   responses:

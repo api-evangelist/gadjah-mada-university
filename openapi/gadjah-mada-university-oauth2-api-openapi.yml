@@ -278,31 +278,6 @@ paths:
       tags:
       - OAuth2
 components:
-  responses:
-    OAuth2Error:
-      content:
-        application/json:
-          schema:
-            properties:
-              error:
-                example: invalid_grant
-                type: string
-              error_description:
-                type: string
-            type: object
-      description: OAuth2 error response
-    Unauthorized:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-      description: Token tidak valid atau tidak disertakan
-    BadRequest:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-      description: Permintaan tidak valid
   schemas:
     TokenResponse:
       description: Respons token OAuth2
@@ -402,6 +377,31 @@ components:
         message:
           type: string
       type: object
+  responses:
+    Unauthorized:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+      description: Token tidak valid atau tidak disertakan
+    OAuth2Error:
+      content:
+        application/json:
+          schema:
+            properties:
+              error:
+                example: invalid_grant
+                type: string
+              error_description:
+                type: string
+            type: object
+      description: OAuth2 error response
+    BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+      description: Permintaan tidak valid
   securitySchemes:
     BasicAuth:
       description: client_id:client_secret via Basic Auth header
