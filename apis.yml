@@ -187,6 +187,12 @@ apis:
   humanURL: https://elok.ugm.ac.id/
   baseURL: https://elok.ugm.ac.id/webservice/rest/server.php
   tags:
+  - LMS
+  - Moodle
+  - Education
+  - Students
+  - Authentication
+  tags_raw:
   - Learning Management
   - Moodle
   - Education
