@@ -137,3 +137,9 @@ gaps:
 - No contact route for API consumers - the only addresses on any surface are library@ugm.ac.id and
   bpp.jurnal@ugm.ac.id, both repository administration, and the OpenAPI declares no info.contact.
 - No terms of service or licence attached to any machine-readable surface.
+
+versioning: >-
+  No published versioning policy. Version exists only as bare strings: info.version "2.0" in the UGM ID
+  OpenAPI and OAI-PMH protocolVersion 2.0; paths are unversioned.
+deprecation: null
+status_page: null

@@ -1,6 +1,30 @@
 openapi: 3.2.0
 info:
-  description: Layanan OAuth 2.0 / OIDC Authorization Server untuk mengakses UGM API.
+  description: 'Layanan OAuth 2.0 / OIDC Authorization Server untuk mengakses UGM API.
+
+
+    **Grant Types yang didukung:**
+
+    - Authorization Code + PKCE (`authorization_code`)
+
+    - Resource Owner Password (`password`)
+
+    - Client Credentials (`client_credentials`)
+
+    - Refresh Token (`refresh_token`)
+
+    - Google ID Token Exchange (`urn:ietf:params:oauth:grant-type:google_id_token`)
+
+    - RFC 8693 Token Exchange (`urn:ietf:params:oauth:grant-type:token-exchange`)
+
+
+    **Autentikasi client:**
+
+    - `client_secret_basic` — Basic Auth header
+
+    - `client_secret_post` — form body
+
+    - `none` — untuk legacy client (akan dihapus di masa depan)'
   title: UGM ID O Auth2 API
   version: '2.0'
 servers:
@@ -278,7 +302,53 @@ paths:
       tags:
       - OAuth2
 components:
+  responses:
+    OAuth2Error:
+      content:
+        application/json:
+          schema:
+            properties:
+              error:
+                example: invalid_grant
+                type: string
+              error_description:
+                type: string
+            type: object
+      description: OAuth2 error response
+    Unauthorized:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+      description: Token tidak valid atau tidak disertakan
+    BadRequest:
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorResponse'
+      description: Permintaan tidak valid
   schemas:
+    UserInfoResponse:
+      description: OIDC UserInfo claims
+      properties:
+        email:
+          type: string
+        email_verified:
+          type: boolean
+        family_name:
+          type: string
+        given_name:
+          type: string
+        name:
+          type: string
+        picture:
+          type: string
+        preferred_username:
+          type: string
+        sub:
+          description: Username
+          type: string
+      type: object
     TokenResponse:
       description: Respons token OAuth2
       example:
@@ -347,27 +417,6 @@ components:
           example: Bearer
           type: string
       type: object
-    UserInfoResponse:
-      description: OIDC UserInfo claims
-      properties:
-        email:
-          type: string
-        email_verified:
-          type: boolean
-        family_name:
-          type: string
-        given_name:
-          type: string
-        name:
-          type: string
-        picture:
-          type: string
-        preferred_username:
-          type: string
-        sub:
-          description: Username
-          type: string
-      type: object
     ErrorResponse:
       properties:
         error:
@@ -377,31 +426,6 @@ components:
         message:
           type: string
       type: object
-  responses:
-    Unauthorized:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-      description: Token tidak valid atau tidak disertakan
-    OAuth2Error:
-      content:
-        application/json:
-          schema:
-            properties:
-              error:
-                example: invalid_grant
-                type: string
-              error_description:
-                type: string
-            type: object
-      description: OAuth2 error response
-    BadRequest:
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorResponse'
-      description: Permintaan tidak valid
   securitySchemes:
     BasicAuth:
       description: client_id:client_secret via Basic Auth header

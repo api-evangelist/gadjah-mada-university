@@ -1,0 +1,218 @@
+generated: '2026-10-20'
+method: derived
+source: the pre-flight dossier, apis.yml pointers, spec servers, well-known, vendors -- nothing fetched here
+generator: derive-hosts.py
+summary:
+  hosts: 18
+  own: 12
+  other_domain: 0
+  platform: 6
+  roles:
+  - api
+  - docs
+  - identity
+  - other
+  - support
+  - website
+hosts:
+- host: akademik.ugm.ac.id
+  found_by:
+  - pointer
+  - probed
+  types:
+  - CourseCatalog
+  serves: []
+  registrable_domain: ugm.ac.id
+  role: other
+  relation: own
+- host: api.crossref.org
+  found_by:
+  - apis[]
+  - contract-discovery
+  types: []
+  serves:
+  - api
+  registrable_domain: crossref.org
+  role: api
+  relation: platform
+- host: api.ror.org
+  found_by:
+  - apis[]
+  - contract-discovery
+  - vendor-detect
+  types: []
+  serves:
+  - api
+  - api-gateway
+  vendor: aws-api-gateway
+  registrable_domain: ror.org
+  role: api
+  relation: platform
+- host: dti.ugm.ac.id
+  found_by:
+  - pointer
+  - apis[]
+  - probed
+  - well-known
+  types:
+  - Support
+  serves:
+  - docs
+  registrable_domain: ugm.ac.id
+  role: support
+  relation: own
+- host: elok.ugm.ac.id
+  found_by:
+  - apis[]
+  - probed
+  - well-known
+  types: []
+  serves:
+  - api
+  - docs
+  registrable_domain: ugm.ac.id
+  role: other
+  relation: own
+- host: github.com
+  found_by:
+  - pointer
+  types:
+  - GitHub
+  serves: []
+  registrable_domain: github.com
+  role: other
+  relation: platform
+- host: journal.ugm.ac.id
+  found_by:
+  - pointer
+  - probed
+  - contract-discovery
+  - well-known
+  types:
+  - ScholarlyPublishing
+  serves: []
+  registrable_domain: ugm.ac.id
+  role: other
+  relation: own
+- host: lib.ugm.ac.id
+  found_by:
+  - pointer
+  - probed
+  types:
+  - AITooling
+  serves: []
+  registrable_domain: ugm.ac.id
+  role: other
+  relation: own
+- host: oauth.dev.ugm.ac.id
+  found_by:
+  - contract-discovery
+  types: []
+  serves: []
+  registrable_domain: ugm.ac.id
+  role: other
+  relation: own
+- host: oauth.simaster.ugm.ac.id
+  found_by:
+  - pointer
+  - apis[]
+  - probed
+  - well-known
+  types:
+  - APIReference
+  - Documentation
+  - Status
+  serves:
+  - api
+  - docs
+  registrable_domain: ugm.ac.id
+  role: docs
+  relation: own
+- host: opac.lib.ugm.ac.id
+  found_by:
+  - pointer
+  - probed
+  - well-known
+  types:
+  - LibraryCatalog
+  serves: []
+  registrable_domain: ugm.ac.id
+  role: other
+  relation: own
+- host: repository.ugm.ac.id
+  found_by:
+  - pointer
+  - probed
+  - contract-discovery
+  - well-known
+  types:
+  - ResearchRepository
+  serves: []
+  registrable_domain: ugm.ac.id
+  role: other
+  relation: own
+- host: ror.org
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - docs
+  registrable_domain: ror.org
+  role: other
+  relation: platform
+- host: sso.ugm.ac.id
+  found_by:
+  - pointer
+  - apis[]
+  - probed
+  - well-known
+  types:
+  - IdentityFederation
+  serves:
+  - api
+  - docs
+  registrable_domain: ugm.ac.id
+  role: identity
+  relation: own
+- host: ugm.ac.id
+  found_by:
+  - pointer
+  - probed
+  - well-known
+  types:
+  - Website
+  - PrivacyPolicy
+  - Blog
+  - BlogRSS
+  serves: []
+  registrable_domain: ugm.ac.id
+  role: website
+  relation: own
+- host: web.ugm.ac.id
+  found_by:
+  - pointer
+  - probed
+  types:
+  - AIPolicy
+  serves: []
+  registrable_domain: ugm.ac.id
+  role: other
+  relation: own
+- host: www.crossref.org
+  found_by:
+  - apis[]
+  types: []
+  serves:
+  - docs
+  registrable_domain: crossref.org
+  role: other
+  relation: platform
+- host: www.linkedin.com
+  found_by:
+  - pointer
+  types:
+  - LinkedIn
+  serves: []
+  registrable_domain: linkedin.com
+  role: other
+  relation: platform

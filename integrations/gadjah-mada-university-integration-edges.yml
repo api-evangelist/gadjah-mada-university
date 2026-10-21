@@ -1,0 +1,16 @@
+generated: '2026-10-20'
+method: none
+source:
+- https://zapier.com/apps/gadjah-mada-university/integrations
+- https://n8n.io/integrations/gadjah-mada-university/
+- https://composio.dev/toolkits/gadjah-mada-university
+- https://monid.ai/tools/gadjah-mada-university
+checked:
+- https://composio.dev/toolkits/gadjah-mada-university
+- https://monid.ai/tools/gadjah-mada-university
+- https://n8n.io/integrations/gadjah-mada-university/
+- https://zapier.com/apps/gadjah-mada-university/integrations
+summary: null
+marketplace_apps: []
+edges: []
+templates: []

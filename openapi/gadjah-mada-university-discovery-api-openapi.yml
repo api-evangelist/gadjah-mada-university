@@ -1,6 +1,30 @@
 openapi: 3.2.0
 info:
-  description: Layanan OAuth 2.0 / OIDC Authorization Server untuk mengakses UGM API.
+  description: 'Layanan OAuth 2.0 / OIDC Authorization Server untuk mengakses UGM API.
+
+
+    **Grant Types yang didukung:**
+
+    - Authorization Code + PKCE (`authorization_code`)
+
+    - Resource Owner Password (`password`)
+
+    - Client Credentials (`client_credentials`)
+
+    - Refresh Token (`refresh_token`)
+
+    - Google ID Token Exchange (`urn:ietf:params:oauth:grant-type:google_id_token`)
+
+    - RFC 8693 Token Exchange (`urn:ietf:params:oauth:grant-type:token-exchange`)
+
+
+    **Autentikasi client:**
+
+    - `client_secret_basic` — Basic Auth header
+
+    - `client_secret_post` — form body
+
+    - `none` — untuk legacy client (akan dihapus di masa depan)'
   title: UGM ID Discovery API
   version: '2.0'
 servers:

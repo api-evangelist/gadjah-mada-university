@@ -1,8 +1,12 @@
 ---
 aid: gadjah-mada-university
+
 name: Gadjah Mada University
+
 x-type: university
+
 x-category: Public Research University
+
 description: >-
   Gadjah Mada University (Universitas Gadjah Mada, UGM) is a public research university in
   Yogyakarta, Indonesia, founded in 1949 and the country's oldest and largest state university.
@@ -25,7 +29,9 @@ description: >-
   edge. The honest summary is a genuine engineering surface with no consumer-facing programme
   around it, plus three real registry and federation relationships recorded as facts about the
   institution rather than as contracts it wrote.
+
 type: Index
+
 deliveryModel:
   model: saas
   open_source: false
@@ -42,6 +48,7 @@ deliveryModel:
     Revised 2026-09-01. UGM operates callable hosts of its own — verified by live retrieval of an
     OpenAPI 3.1.0 document, two OAI-PMH endpoints and a SAML descriptor. Not commercial: no pricing,
     no plans and no billing exist for any surface.
+
 accessModel:
   pricing: free
   onboarding: request
@@ -60,10 +67,15 @@ accessModel:
     anonymous and free — verified with no credentials. Everything behind a token requires a
     client_id issued internally by DTI; there is no public registration page and no dynamic client
     registration endpoint, so onboarding is `request` and `public` is false.
+
 position: Consuming
+
 access: 3rd-Party
+
 image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/gadjah-mada-university.png
+
 url: https://raw.githubusercontent.com/api-evangelist/gadjah-mada-university/refs/heads/main/apis.yml
+
 tags:
 - University
 - Higher Education
@@ -76,6 +88,7 @@ tags:
 - Scholarly Publishing
 - OAI-PMH
 - Library
+
 tags_raw:
 - University
 - Higher Education
@@ -89,9 +102,104 @@ tags_raw:
 - Scholarly Publishing
 - OAI-PMH
 - Library
+
 created: '2026-06-03'
+
 modified: '2026-09-01'
+
 specificationVersion: '0.23'
+
+maintainers:
+- FN: Kin Lane
+  email: kin@apievangelist.com
+
+common:
+- type: AgenticAccess
+  url: agentic-access/gadjah-mada-university-agentic-access.yml
+- type: Spectral
+  url: rules/gadjah-mada-university-rules.yml
+- type: JSONLD
+  url: json-ld/gadjah-mada-university-context.jsonld
+- type: DataModel
+  url: data-model/gadjah-mada-university-data-model.yml
+- type: OAuthScopes
+  url: scopes/gadjah-mada-university-scopes.yml
+- type: ErrorCatalog
+  url: errors/gadjah-mada-university-problem-types.yml
+- type: WellKnown
+  url: well-known/gadjah-mada-university-well-known.yml
+- type: Hosts
+  url: hosts/gadjah-mada-university-hosts.yml
+- type: Vendors
+  url: vendors/gadjah-mada-university-vendors.yml
+- type: CapabilityMap
+  url: capabilities/gadjah-mada-university-capability-edges.yml
+  name: Gadjah Mada University Business Capability Map
+- type: Website
+  url: https://ugm.ac.id/en/
+- type: APIReference
+  url: https://oauth.simaster.ugm.ac.id/docs
+- type: Documentation
+  url: https://oauth.simaster.ugm.ac.id/openapi.json
+- type: Status
+  url: https://oauth.simaster.ugm.ac.id/health
+- type: PrivacyPolicy
+  url: https://ugm.ac.id/en/privacy-policy/
+- type: Blog
+  url: https://ugm.ac.id/en/news/
+- type: BlogRSS
+  url: https://ugm.ac.id/en/feed/
+- type: Support
+  url: https://dti.ugm.ac.id/knowledge-base/
+- type: IdentityFederation
+  url: https://sso.ugm.ac.id/idp/profile/Metadata/SAML
+- type: ResearchRepository
+  url: http://repository.ugm.ac.id/
+- type: LibraryCatalog
+  url: https://opac.lib.ugm.ac.id/
+- type: ScholarlyPublishing
+  url: https://journal.ugm.ac.id/
+- type: CourseCatalog
+  url: https://akademik.ugm.ac.id/
+- type: AIPolicy
+  url: https://web.ugm.ac.id/etika-penggunaan-ai/
+- type: AITooling
+  url: https://lib.ugm.ac.id/file/panduan-penggunaan-genai/
+- type: GitHub
+  url: https://github.com/ugm-ac-id
+- type: LinkedIn
+  url: https://www.linkedin.com/school/universitas-gadjah-mada/
+- type: Authentication
+  url: authentication/gadjah-mada-university-authentication.yml
+- type: Scopes
+  url: scopes/gadjah-mada-university-scopes.yml
+- type: Conformance
+  url: conformance/gadjah-mada-university-conformance.yml
+- type: Lifecycle
+  url: lifecycle/gadjah-mada-university-lifecycle.yml
+- type: Rules
+  url: rules/gadjah-mada-university-rules.yml
+- type: Vocabulary
+  url: vocabulary/gadjah-mada-university-vocabulary.yml
+- type: Examples
+  url: examples/gadjah-mada-university-ugm-id-examples.yml
+- type: JSONSchema
+  url: json-schema/gadjah-mada-university-ugm-id-schemas.json
+- type: DomainSecurity
+  url: security/gadjah-mada-university-domain-security.yml
+- type: Plans
+  url: plans/gadjah-mada-university-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/gadjah-mada-university-rate-limits.yml
+- type: FinOps
+  url: finops/gadjah-mada-university-finops.yml
+- type: Review
+  url: review.yml
+- type: x-json-ld
+  url: json-ld/gadjah-mada-university-context.jsonld
+- type: x-blogs
+  url: blogs/blogs.json
+
 apis:
 - aid: gadjah-mada-university:shibboleth-idp
   name: UGM Shibboleth SAML 2.0 Identity Provider
@@ -300,8 +408,6 @@ apis:
     url: json-schema/gadjah-mada-university-ugm-id-schemas.json
   - type: Examples
     url: examples/gadjah-mada-university-ugm-id-examples.yml
-  - type: Errors
-    url: errors/gadjah-mada-university-errors.yml
   - type: Rules
     url: rules/gadjah-mada-university-rules.yml
   - type: Status
@@ -342,8 +448,6 @@ apis:
     url: json-schema/gadjah-mada-university-ugm-id-schemas.json
   - type: Examples
     url: examples/gadjah-mada-university-ugm-id-examples.yml
-  - type: Errors
-    url: errors/gadjah-mada-university-errors.yml
   - type: Rules
     url: rules/gadjah-mada-university-rules.yml
   - type: Status
@@ -384,8 +488,6 @@ apis:
     url: json-schema/gadjah-mada-university-ugm-id-schemas.json
   - type: Examples
     url: examples/gadjah-mada-university-ugm-id-examples.yml
-  - type: Errors
-    url: errors/gadjah-mada-university-errors.yml
   - type: Rules
     url: rules/gadjah-mada-university-rules.yml
   - type: Status
@@ -426,8 +528,6 @@ apis:
     url: json-schema/gadjah-mada-university-ugm-id-schemas.json
   - type: Examples
     url: examples/gadjah-mada-university-ugm-id-examples.yml
-  - type: Errors
-    url: errors/gadjah-mada-university-errors.yml
   - type: Rules
     url: rules/gadjah-mada-university-rules.yml
   - type: Status
@@ -470,8 +570,6 @@ apis:
     url: json-schema/gadjah-mada-university-ugm-id-schemas.json
   - type: Examples
     url: examples/gadjah-mada-university-ugm-id-examples.yml
-  - type: Errors
-    url: errors/gadjah-mada-university-errors.yml
   - type: Rules
     url: rules/gadjah-mada-university-rules.yml
   - type: Status
@@ -512,8 +610,6 @@ apis:
     url: json-schema/gadjah-mada-university-ugm-id-schemas.json
   - type: Examples
     url: examples/gadjah-mada-university-ugm-id-examples.yml
-  - type: Errors
-    url: errors/gadjah-mada-university-errors.yml
   - type: Rules
     url: rules/gadjah-mada-university-rules.yml
   - type: Status
@@ -554,8 +650,6 @@ apis:
     url: json-schema/gadjah-mada-university-ugm-id-schemas.json
   - type: Examples
     url: examples/gadjah-mada-university-ugm-id-examples.yml
-  - type: Errors
-    url: errors/gadjah-mada-university-errors.yml
   - type: Rules
     url: rules/gadjah-mada-university-rules.yml
   - type: Status
@@ -568,76 +662,7 @@ apis:
     url: https://journal.ugm.ac.id/
   - type: Lifecycle
     url: lifecycle/gadjah-mada-university-lifecycle.yml
-common:
-- type: CapabilityMap
-  url: capabilities/gadjah-mada-university-capability-edges.yml
-  name: Gadjah Mada University Business Capability Map
-- type: Website
-  url: https://ugm.ac.id/en/
-- type: APIReference
-  url: https://oauth.simaster.ugm.ac.id/docs
-- type: Documentation
-  url: https://oauth.simaster.ugm.ac.id/openapi.json
-- type: Status
-  url: https://oauth.simaster.ugm.ac.id/health
-- type: PrivacyPolicy
-  url: https://ugm.ac.id/en/privacy-policy/
-- type: Blog
-  url: https://ugm.ac.id/en/news/
-- type: BlogRSS
-  url: https://ugm.ac.id/en/feed/
-- type: Support
-  url: https://dti.ugm.ac.id/knowledge-base/
-- type: IdentityFederation
-  url: https://sso.ugm.ac.id/idp/profile/Metadata/SAML
-- type: ResearchRepository
-  url: http://repository.ugm.ac.id/
-- type: LibraryCatalog
-  url: https://opac.lib.ugm.ac.id/
-- type: ScholarlyPublishing
-  url: https://journal.ugm.ac.id/
-- type: CourseCatalog
-  url: https://akademik.ugm.ac.id/
-- type: AIPolicy
-  url: https://web.ugm.ac.id/etika-penggunaan-ai/
-- type: AITooling
-  url: https://lib.ugm.ac.id/file/panduan-penggunaan-genai/
-- type: GitHub
-  url: https://github.com/ugm-ac-id
-- type: LinkedIn
-  url: https://www.linkedin.com/school/universitas-gadjah-mada/
-- type: Authentication
-  url: authentication/gadjah-mada-university-authentication.yml
-- type: Scopes
-  url: scopes/gadjah-mada-university-scopes.yml
-- type: Conformance
-  url: conformance/gadjah-mada-university-conformance.yml
-- type: Errors
-  url: errors/gadjah-mada-university-errors.yml
-- type: Lifecycle
-  url: lifecycle/gadjah-mada-university-lifecycle.yml
-- type: Rules
-  url: rules/gadjah-mada-university-rules.yml
-- type: Vocabulary
-  url: vocabulary/gadjah-mada-university-vocabulary.yml
-- type: Examples
-  url: examples/gadjah-mada-university-ugm-id-examples.yml
-- type: JSONSchema
-  url: json-schema/gadjah-mada-university-ugm-id-schemas.json
-- type: DomainSecurity
-  url: security/gadjah-mada-university-domain-security.yml
-- type: Plans
-  url: plans/gadjah-mada-university-plans-pricing.yml
-- type: RateLimits
-  url: rate-limits/gadjah-mada-university-rate-limits.yml
-- type: FinOps
-  url: finops/gadjah-mada-university-finops.yml
-- type: Review
-  url: review.yml
-- type: x-json-ld
-  url: json-ld/gadjah-mada-university-context.jsonld
-- type: x-blogs
-  url: blogs/blogs.json
+
 x-coverage:
   state: covered
   reason: covered
@@ -799,6 +824,7 @@ x-coverage:
   - url: https://www.linkedin.com/school/universitas-gadjah-mada/
     status: 999
     note: LinkedIn bot challenge. Live and blocked, not dead.
+
 x-attribution-note:
   date: '2026-09-01'
   summary: >-
@@ -810,8 +836,11 @@ x-attribution-note:
     and are ours, not theirs. No vendor product specification (EPrints, OJS/PKP, Moodle) is held
     under this slug. Expect this repository's Kin Score to RISE, and unlike most of this cohort the
     rise is measuring the institution's own engineering.
-maintainers:
-- FN: Kin Lane
-  email: kin@apievangelist.com
+
 x-tags-removed:
 - OpenID Connect
+x-enrichment:
+  date: '2026-10-20'
+  status: nochange
+  artifacts_added: 0
+  pass: local-v5

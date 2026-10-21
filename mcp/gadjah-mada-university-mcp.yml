@@ -1,0 +1,125 @@
+generated: '2026-10-20'
+method: derived
+generator: derive-mcp-candidate.py
+source:
+- openapi/gadjah-mada-university-discovery-api-openapi.yml
+- openapi/gadjah-mada-university-infra-api-openapi.yml
+- openapi/gadjah-mada-university-me-api-openapi.yml
+- openapi/gadjah-mada-university-oai-pmh-api-openapi.yml
+- openapi/gadjah-mada-university-oauth2-api-openapi.yml
+- openapi/gadjah-mada-university-social-login-api-openapi.yml
+- openapi/gadjah-mada-university-user-api-openapi.yml
+status: candidate
+deployment:
+  mode: none
+  auth: unknown
+  verified: probed
+note: No MCP server was found. The pre-flight posted tools/list to /mcp on oauth.dev.ugm.ac.id, journal.ugm.ac.id, repository.ugm.ac.id, api.crossref.org;
+  verdict hold-unverified. Candidate tools below are derived from the 21 operation(s) in the provider's own OpenAPI (21 listed); they describe
+  what a server WOULD expose, not one that exists.
+tools:
+- name: get_jwks
+  operationId: getJwks
+  method: GET
+  path: /.well-known/jwks.json
+  description: JSON Web Key Set (JWKS)
+- name: health_check
+  operationId: healthCheck
+  method: GET
+  path: /health
+  description: Health Check
+- name: get_me
+  operationId: getMe
+  method: GET
+  path: /api/me
+  description: Data User — Profil Dasar
+- name: oai_request_all_journals
+  operationId: oaiRequestAllJournals
+  method: GET
+  path: /index/oai
+  description: OAI-PMH 2.0 request across every UGM journal
+- name: authorize_user
+  operationId: authorizeUser
+  method: GET
+  path: /oauth/authorize
+  description: Otorisasi Pengguna (Authorization Code + PKCE)
+- name: authorize_apple
+  operationId: authorizeApple
+  method: GET
+  path: /authorize/apple
+  description: Login dengan Apple
+- name: get_user_me
+  operationId: getUserMe
+  method: GET
+  path: /user/me
+  description: Data User — Profil Lengkap (Simaster)
+- name: get_oauth_metadata
+  operationId: getOAuthMetadata
+  method: GET
+  path: /.well-known/oauth-authorization-server
+  description: OAuth 2.0 Authorization Server Metadata (RFC 8414)
+- name: oai_request
+  operationId: oaiRequest
+  method: GET
+  path: /oai2
+  description: OAI-PMH 2.0 request
+- name: introspect_token
+  operationId: introspectToken
+  method: POST
+  path: /oauth/introspect
+  description: Introspeksi Token (RFC 7662)
+- name: authorize_facebook
+  operationId: authorizeFacebook
+  method: GET
+  path: /authorize/facebook
+  description: Login dengan Facebook
+- name: get_user_by_username
+  operationId: getUserByUsername
+  method: GET
+  path: /user/username/{username}
+  description: Data User by Username
+- name: get_oidc_configuration
+  operationId: getOidcConfiguration
+  method: GET
+  path: /.well-known/openid-configuration
+  description: OpenID Connect Discovery
+- name: logout_user
+  operationId: logoutUser
+  method: GET
+  path: /oauth/logout
+  description: RP-Initiated Logout (OIDC)
+- name: authorize_google
+  operationId: authorizeGoogle
+  method: GET
+  path: /authorize/google
+  description: Login dengan Google
+- name: revoke_token
+  operationId: revokeToken
+  method: POST
+  path: /oauth/revoke
+  description: Cabut Token OAuth2 (RFC 7009)
+- name: authorize_linkedin
+  operationId: authorizeLinkedin
+  method: GET
+  path: /authorize/linkedin
+  description: Login dengan LinkedIn
+- name: get_token
+  operationId: getToken
+  method: POST
+  path: /oauth/token
+  description: Terbitkan Token OAuth2
+- name: authorize_microsoft
+  operationId: authorizeMicrosoft
+  method: GET
+  path: /authorize/microsoft
+  description: Login dengan Microsoft 365 UGM
+- name: get_user_info
+  operationId: getUserInfo
+  method: GET
+  path: /userinfo
+  description: OIDC UserInfo Endpoint
+- name: callback_apple
+  operationId: callbackApple
+  method: POST
+  path: /callback/apple
+  description: Callback Apple Sign In

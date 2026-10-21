@@ -1,0 +1,53 @@
+generated: '2026-10-20'
+method: derived
+generator: derive-problem-types.py
+source:
+- openapi/gadjah-mada-university-discovery-api-openapi.yml
+- openapi/gadjah-mada-university-infra-api-openapi.yml
+- openapi/gadjah-mada-university-me-api-openapi.yml
+- openapi/gadjah-mada-university-oai-pmh-api-openapi.yml
+- openapi/gadjah-mada-university-oauth2-api-openapi.yml
+- openapi/gadjah-mada-university-social-login-api-openapi.yml
+- openapi/gadjah-mada-university-user-api-openapi.yml
+format: custom
+envelope:
+  media_type: application/json
+  schema: ErrorResponse
+coverage:
+  operations: 21
+  statuses_declared: 5
+problems:
+- status: 400
+  title: Bad Request
+  description: Permintaan tidak valid
+  operations: 2
+  media_types:
+  - application/json
+  schema: ErrorResponse
+- status: 401
+  title: Unauthorized
+  description: Token tidak valid atau tidak disertakan
+  operations: 7
+  media_types:
+  - application/json
+  schema: ErrorResponse
+- status: 403
+  title: Forbidden
+  description: Scope tidak mencukupi atau akses ditolak
+  operations: 4
+  media_types:
+  - application/json
+  schema: ErrorResponse
+- status: 404
+  title: Not Found
+  description: User tidak ditemukan
+  operations: 1
+  media_types: []
+  schema: null
+- status: 503
+  title: Service Unavailable
+  description: Server tidak sehat
+  operations: 1
+  media_types:
+  - application/json
+  schema: HealthResponse
