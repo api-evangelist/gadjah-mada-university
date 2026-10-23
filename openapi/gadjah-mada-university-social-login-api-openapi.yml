@@ -195,3 +195,9 @@ components:
       description: Access token JWT dari /oauth/token
       scheme: bearer
       type: http
+x-provenance:
+  method: harvested
+  publisher: Gadjah Mada University
+  source: https://oauth.simaster.ugm.ac.id/openapi.json
+  note: split by refine-openapis from the provider's own published document, verified by fetch (openapi/_original/*.fetch.json);
+    stamped by stamp-openapi-provenance.py (roadmap#793)
